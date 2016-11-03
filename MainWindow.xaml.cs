@@ -19,6 +19,10 @@ using System.Windows.Shapes;
 
 namespace AutoClicker
 {
+    // Used codes from
+    // https://social.msdn.microsoft.com/Forums/en-US/bfc75b57-df16-48c6-92af-ea0a34f540ae/how-to-get-the-handle-of-a-window-that-i-click?forum=csharplanguage
+
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
