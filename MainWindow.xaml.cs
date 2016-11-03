@@ -164,13 +164,13 @@ namespace AutoClicker
             IntPtr handle = WindowFromPoint((int)pt.X, (int)pt.Y);
             Rect windowRect = new Rect();
 
-            SetForegroundWindow(handle);
+            SetForegroundWindow(currentlySelectedWindow);
 
-            SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
-            SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+            //SendMessage(currentlySelectedWindow, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+            //SendMessage(currentlySelectedWindow, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
 
-            //SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(100, 100));
-            //SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(100, 100));
+            SendMessage(currentlySelectedWindow, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text)));
+            SendMessage(currentlySelectedWindow, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text)));
         }
 
         public static Point GetMousePosition()
@@ -206,6 +206,9 @@ namespace AutoClicker
 
                     Color windowColor = GetPixelColorFromWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
                     relativeLabel.Content = xCoordinateBox.Text + ", " + yCoordinateBox.Text + "      color: " + windowColor.R + " " + windowColor.G + " " + windowColor.B;
+
+                    Color windowColor2 = GetPixelColorFromWindow(IntPtr.Zero, int.Parse(xCoordinateBox.Text) + windowRect.Left, int.Parse(yCoordinateBox.Text) + windowRect.Top);
+                    referenceLabel.Content = xCoordinateBox.Text + ", " + yCoordinateBox.Text + "      color: " + windowColor2.R + " " + windowColor2.G + " " + windowColor2.B;
                 }));
 
                 Thread.Sleep(100);
