@@ -63,6 +63,17 @@ namespace AutoClicker
         [DllImport("gdi32.dll")]
         static extern uint GetPixel(IntPtr hdc, int nXPos, int nYPos);
 
+        [DllImport("user32.dll")]
+        public static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle);
+
+        public struct Rect
+        {
+            public int Left { get; set; }
+            public int Top { get; set; }
+            public int Right { get; set; }
+            public int Bottom { get; set; }
+        }
+
         [StructLayout(LayoutKind.Sequential)]
         internal struct Win32Point
         {
@@ -94,7 +105,7 @@ namespace AutoClicker
         {
             InitializeComponent();
 
-            cursorThread = new Thread(new ThreadStart(CursorUpdate));
+            cursorThread = new Thread(new ThreadStart(LabelUpdate));
             cursorThread.Start();
 
             /*
@@ -119,7 +130,7 @@ namespace AutoClicker
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DoMouseClick(333, 333);
+            DoMouseClick(2100, 280);
             //DoMouseClick(100, 50);
             //MessageBox.Show("Event handler was created manually.");
         }
@@ -129,11 +140,15 @@ namespace AutoClicker
             IntPtr myHandle = new WindowInteropHelper(this).Handle;
             Point pt = new Point(x, y);
             IntPtr handle = WindowFromPoint((int)pt.X, (int)pt.Y);
+            Rect windowRect = new Rect();
 
             SetForegroundWindow(handle);
 
-            SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
-            SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+            //SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+            //SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+
+            SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(100, 100));
+            SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(100, 100));
         }
 
         public static Point GetMousePosition()
@@ -148,7 +163,7 @@ namespace AutoClicker
             threadShouldEnd = true;
         }
 
-        private void CursorUpdate()
+        private void LabelUpdate()
         {
             while(!threadShouldEnd)
             {
@@ -156,10 +171,17 @@ namespace AutoClicker
                 Point p = GetMousePosition();
                 Color c = GetPixelColor((int)p.X, (int)p.Y);
 
+                IntPtr handle = WindowFromPoint((int)p.X, (int)p.Y);
+                Rect windowRect = new Rect();
+                GetWindowRect(handle, ref windowRect);
+
+
                 //Update UI
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    mousePositionLabel.Content = p.X + ", " + p.Y + " " + c.R + " " + c.G + " " + c.B;
+                    absoluteLabel.Content = p.X + ", " + p.Y + "      color: " + c.R + " " + c.G + " " + c.B;
+
+                    windowCoordinateLabel.Content = "X: " + windowRect.Left + "  Y: " + windowRect.Top;
                 }));
 
                 Thread.Sleep(100);

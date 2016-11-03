@@ -9,6 +9,8 @@
         Closing="Window_Closing">
     <Grid>
         <Button Margin="188,57,184,203" Content="Start Clicking" Click="Button_Click"/>
-        <Label x:Name="mousePositionLabel" Content="Label" HorizontalAlignment="Left" Margin="222,145,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="absoluteLabel" Content="Absolute" HorizontalAlignment="Left" Margin="222,145,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="relativeLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,190,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="windowCoordinateLabel" Content="Window Coordinate" HorizontalAlignment="Left" Margin="188,221,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
