@@ -4,9 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AutoClicker"
+        xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="725"
         Closing="Window_Closing">
+    
+    <Window.Resources>
+        <!--Create list of enumeration values-->
+        <ObjectDataProvider x:Key="CommandType" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="local:CommandType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+
     <Grid>
         <Button Margin="173,47,199,213" Content="Start Clicking" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="absoluteLabel" Content="Absolute" HorizontalAlignment="Left" Margin="222,145,0,0" VerticalAlignment="Top" Width="96"/>
@@ -22,7 +33,7 @@
         <Label x:Name="referenceLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,239,0,0" VerticalAlignment="Top"/>
         <DataGrid x:Name="commandDataGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="312" Width="315" ItemsSource="{Binding}" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="CommandType" Binding="{Binding commandType}" Width="4*" />
+                <DataGridComboBoxColumn  Header="CommandType" SelectedItemBinding="{Binding commandType}" ItemsSource="{Binding Source={StaticResource CommandType}}" Width="4*" />
                 <DataGridTextColumn Header="Data" Binding="{Binding data}" Width="4*" />
             </DataGrid.Columns>
         </DataGrid>

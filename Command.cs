@@ -8,9 +8,12 @@ namespace AutoClicker
 {
     public enum CommandType
     {
-        Wait,
-        Click,
-        WaitForColor
+        Wait,           // Do nothing for x ms
+        Click,          // Click location
+        WaitForColor,   // Wait for color before proceeding to next command
+        Label,          // Label used for jumping
+        JumpToLabel,    // Jump to label
+
     }
 
     public class Command
