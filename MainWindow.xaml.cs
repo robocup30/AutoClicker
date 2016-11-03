@@ -195,15 +195,17 @@ namespace AutoClicker
 
                 IntPtr handle = WindowFromPoint((int)p.X, (int)p.Y);
                 Rect windowRect = new Rect();
-                GetWindowRect(handle, ref windowRect);
-
+                GetWindowRect(currentlySelectedWindow, ref windowRect);
 
                 //Update UI
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     absoluteLabel.Content = p.X + ", " + p.Y + "      color: " + c.R + " " + c.G + " " + c.B;
 
-                    windowCoordinateLabel.Content = "X: " + windowRect.Left + "  Y: " + windowRect.Top;
+                    windowCoordinateLabel.Content = "Window handle is " + currentlySelectedWindow + " X: " + windowRect.Left + "  Y: " + windowRect.Top;
+
+                    Color windowColor = GetPixelColorFromWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
+                    relativeLabel.Content = xCoordinateBox.Text + ", " + yCoordinateBox.Text + "      color: " + windowColor.R + " " + windowColor.G + " " + windowColor.B;
                 }));
 
                 Thread.Sleep(100);
@@ -215,6 +217,18 @@ namespace AutoClicker
             IntPtr hdc = GetDC(IntPtr.Zero);
             uint pixel = GetPixel(hdc, x, y);
             ReleaseDC(IntPtr.Zero, hdc);
+            Color color = Color.FromRgb(
+                (byte)(pixel & 0x000000FF),
+                (byte)((pixel & 0x0000FF00) >> 8),
+                (byte)((pixel & 0x00FF0000) >> 16));
+            return color;
+        }
+
+        static public Color GetPixelColorFromWindow(IntPtr window, int x, int y)
+        {
+            IntPtr hdc = GetDC(window);
+            uint pixel = GetPixel(hdc, x, y);
+            ReleaseDC(window, hdc);
             Color color = Color.FromRgb(
                 (byte)(pixel & 0x000000FF),
                 (byte)((pixel & 0x0000FF00) >> 8),
