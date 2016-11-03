@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -142,9 +143,16 @@ namespace AutoClicker
         Thread cursorThread;
         bool threadShouldEnd = false;
 
+        public List<Command> commands = new List<Command>();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            commands.Add(new Command(CommandType.Wait, "Command 1"));
+            commands.Add(new Command(CommandType.Click, "Command 2"));
+
+            commandDataGrid.DataContext = commands;
 
             cursorThread = new Thread(new ThreadStart(LabelUpdate));
             cursorThread.Start();
@@ -152,9 +160,7 @@ namespace AutoClicker
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DoMouseClick(2100, 280);
-            //DoMouseClick(100, 50);
-            //MessageBox.Show("Event handler was created manually.");
+            DoMouseClickAtWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
         }
 
         public void DoMouseClick(uint x, uint y)
@@ -162,15 +168,21 @@ namespace AutoClicker
             IntPtr myHandle = new WindowInteropHelper(this).Handle;
             Point pt = new Point(x, y);
             IntPtr handle = WindowFromPoint((int)pt.X, (int)pt.Y);
-            Rect windowRect = new Rect();
 
-            SetForegroundWindow(currentlySelectedWindow);
+            SetForegroundWindow(handle);
 
-            //SendMessage(currentlySelectedWindow, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
-            //SendMessage(currentlySelectedWindow, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+            SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+            SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+        }
 
-            SendMessage(currentlySelectedWindow, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text)));
-            SendMessage(currentlySelectedWindow, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text)));
+        public void DoMouseClickAtWindow(IntPtr window, int x, int y)
+        {
+            IntPtr myHandle = new WindowInteropHelper(this).Handle;
+
+            SetForegroundWindow(window);
+
+            SendMessage(window, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(x, y));
+            SendMessage(window, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(x, y));
         }
 
         public static Point GetMousePosition()

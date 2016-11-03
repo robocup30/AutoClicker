@@ -8,9 +8,9 @@
         Title="MainWindow" Height="350" Width="525"
         Closing="Window_Closing">
     <Grid>
-        <Button Margin="188,57,184,203" Content="Start Clicking" Click="Button_Click"/>
-        <Label x:Name="absoluteLabel" Content="Absolute" HorizontalAlignment="Left" Margin="222,145,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="relativeLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,190,0,0" VerticalAlignment="Top"/>
+        <Button Margin="173,47,199,213" Content="Start Clicking" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="absoluteLabel" Content="Absolute" HorizontalAlignment="Left" Margin="222,145,0,0" VerticalAlignment="Top" Width="96"/>
+        <Label x:Name="relativeLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,198,0,0" VerticalAlignment="Top"/>
         <Label x:Name="windowCoordinateLabel" Content="Window Coordinate" HorizontalAlignment="Left" Margin="188,270,0,0" VerticalAlignment="Top"/>
         <Button x:Name="FindWindowButton" Content="FindWindow" HorizontalAlignment="Left" Margin="360,57,0,0" VerticalAlignment="Top" Width="114" Click="FindWindowButton_Click" Height="40"/>
         <TextBox x:Name="xCoordinateBox" HorizontalAlignment="Left" Height="23" Margin="27,43,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
@@ -20,5 +20,11 @@
         <TextBlock x:Name="xCoordinateBoxLabel" HorizontalAlignment="Left" Margin="27,22,0,0" TextWrapping="Wrap" Text="X Coordinate" VerticalAlignment="Top" RenderTransformOrigin="0.224,0.438"/>
         <TextBlock x:Name="yCoordinateBoxLabel" HorizontalAlignment="Left" Margin="27,81,0,0" TextWrapping="Wrap" Text="Y Coordinate" VerticalAlignment="Top" RenderTransformOrigin="0.224,0.438"/>
         <Label x:Name="referenceLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,239,0,0" VerticalAlignment="Top"/>
+        <DataGrid x:Name="commandDataGrid" HorizontalAlignment="Right" Margin="333,145,0,0" VerticalAlignment="Bottom" Height="164" Width="174" ItemsSource="{Binding}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="CommandType" Binding="{Binding commandType}"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding data}"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </Window>
