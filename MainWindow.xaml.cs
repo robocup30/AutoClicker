@@ -166,11 +166,11 @@ namespace AutoClicker
 
             SetForegroundWindow(handle);
 
-            //SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
-            //SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+            SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
+            SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
 
-            SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(100, 100));
-            SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(100, 100));
+            //SendMessage(handle, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(100, 100));
+            //SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(100, 100));
         }
 
         public static Point GetMousePosition()
@@ -275,6 +275,33 @@ namespace AutoClicker
 
             }
             return CallNextHookEx(_hookID, nCode, wParam, lParam);
+        }
+
+        private void textBoxValue_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            e.Handled = !TextBoxTextAllowed(e.Text);
+        }
+
+        private void textBoxValue_Pasting(object sender, DataObjectPastingEventArgs e)
+        {
+            if (e.DataObject.GetDataPresent(typeof(string)))
+            {
+                string Text1 = (string)e.DataObject.GetData(typeof(string));
+                if (!TextBoxTextAllowed(Text1))
+                {
+                    e.CancelCommand();
+                }
+            }
+            else
+            {
+                e.CancelCommand();
+            }
+        }
+
+        private bool TextBoxTextAllowed(string Text2)
+        {
+            return Array.TrueForAll<char>(Text2.ToCharArray(),
+                delegate (char c) { return char.IsDigit(c) || char.IsControl(c); });
         }
     }
 }

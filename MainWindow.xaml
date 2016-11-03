@@ -13,5 +13,7 @@
         <Label x:Name="relativeLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,190,0,0" VerticalAlignment="Top"/>
         <Label x:Name="windowCoordinateLabel" Content="Window Coordinate" HorizontalAlignment="Left" Margin="188,221,0,0" VerticalAlignment="Top"/>
         <Button x:Name="FindWindowButton" Content="FindWindow" HorizontalAlignment="Left" Margin="412,87,0,0" VerticalAlignment="Top" Width="75" Click="FindWindowButton_Click"/>
+        <TextBox x:Name="xCoordinateBox" HorizontalAlignment="Left" Height="23" Margin="43,115,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
+        <TextBox x:Name="yCoordinateBox" HorizontalAlignment="Left" Height="23" Margin="43,157,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
     </Grid>
 </Window>
