@@ -236,7 +236,12 @@ namespace AutoClicker
 
                 Command currentCommand = commands[currentCommandIndex];
 
-                if(currentCommand.commandType == CommandType.Wait)
+                Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    commandDataGrid.SelectedItem = commandDataGrid.Items[currentCommandIndex];
+                }));
+
+                if (currentCommand.commandType == CommandType.Wait)
                 {
                     Console.Out.WriteLine("SLEEPING " + int.Parse(currentCommand.data0));
                     Thread.Sleep(int.Parse(currentCommand.data0));
