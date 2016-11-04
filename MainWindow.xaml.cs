@@ -159,6 +159,8 @@ namespace AutoClicker
         public List<Command> commands = new List<Command>();
         public Dictionary<string, int> macroVariables = new Dictionary<string, int>();
 
+        public CSVHandler csvHandler = new CSVHandler();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -578,8 +580,6 @@ namespace AutoClicker
             // Create OpenFileDialog 
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
-
-
             // Set filter for file extension and default file extension 
             dlg.DefaultExt = ".csv";
             dlg.Filter = "CSV Files (*.csv)|*.csv";
@@ -594,17 +594,34 @@ namespace AutoClicker
             {
                 // Open document 
                 string filename = dlg.FileName;
+                Console.WriteLine("OPENING FILE IS " + filename);
+                csvHandler.OpenFile(filename);
             }
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
-
+            csvHandler.SaveCurrentCommands(commands);
         }
 
         private void MenuSaveAs_Click(object sender, RoutedEventArgs e)
         {
+            Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+            dlg.FileName = "Document"; // Default file name
+            dlg.DefaultExt = ".csv"; // Default file extension
+            dlg.Filter = "CSV Files (*.csv)|*.csv";
 
+            // Show save file dialog box
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Process save file dialog box results
+            if (result == true)
+            {
+                // Save document
+                string filename = dlg.FileName;
+                csvHandler.SaveCurrentCommandsAs(filename, commands);
+
+            }
         }
     }
 }
