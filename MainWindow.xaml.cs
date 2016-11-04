@@ -117,6 +117,18 @@ namespace AutoClicker
             public int y;
         }
 
+        public struct IntPoint
+        {
+            public int x;
+            public int y;
+
+            public IntPoint(int v1, int v2)
+            {
+                this.x = v1;
+                this.y = v2;
+            }
+        }
+
         public enum WMessages : int
         {
             WM_LBUTTONDOWN = 0x201,
@@ -141,6 +153,7 @@ namespace AutoClicker
         public static IntPtr currentlySelectedWindow = IntPtr.Zero;
         private static IntPtr _hookID = IntPtr.Zero;
         Thread cursorThread;
+        Thread macroThread;
         bool threadShouldEnd = false;
 
         public List<Command> commands = new List<Command>();
@@ -149,18 +162,26 @@ namespace AutoClicker
         {
             InitializeComponent();
 
-            commands.Add(new Command(CommandType.Wait, "Command 1", "f", "a", "c"));
-            commands.Add(new Command(CommandType.Click, "Command 2", "a", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.Wait, "1000", "f", "a", "c"));
+            commands.Add(new Command(CommandType.Click, "50, 50", "2000", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.Click, "334, 223", "2000", "fds", "das", "fds"));
 
             commandDataGrid.DataContext = commands;
 
             cursorThread = new Thread(new ThreadStart(LabelUpdate));
             cursorThread.Start();
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            DoMouseClickAtWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
+            if(macroThread == null || !macroThread.IsAlive)
+            {
+                macroThread = new Thread(new ThreadStart(MacroUpdate));
+                macroThread.Start();
+            }
+            //DoMouseClickAtWindow(currentlySelectedWindow, 250, 450);
+            //DoMouseClickAtWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
         }
 
         public void DoMouseClick(uint x, uint y)
@@ -175,12 +196,12 @@ namespace AutoClicker
             SendMessage(handle, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM((int)pt.X, (int)pt.Y));
         }
 
+        // X and Y is relative to the window
         public void DoMouseClickAtWindow(IntPtr window, int x, int y)
         {
-            IntPtr myHandle = new WindowInteropHelper(this).Handle;
+            //IntPtr myHandle = new WindowInteropHelper(this).Handle;
 
-            SetForegroundWindow(window);
-
+            //SetForegroundWindow(window);
             SendMessage(window, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(x, y));
             SendMessage(window, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(x, y));
         }
@@ -195,6 +216,37 @@ namespace AutoClicker
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             threadShouldEnd = true;
+        }
+
+        private void MacroUpdate()
+        {
+            int currentCommandIndex = 0;
+            while (!threadShouldEnd)
+            {
+                if(currentCommandIndex >= commands.Count)
+                {
+                    break;
+                }
+
+                Command currentCommand = commands[currentCommandIndex];
+
+                if(currentCommand.commandType == CommandType.Wait)
+                {
+                    Console.Out.WriteLine("SLEEPING " + int.Parse(currentCommand.data0));
+                    Thread.Sleep(int.Parse(currentCommand.data0));
+                }
+                else if(currentCommand.commandType == CommandType.Click)
+                {
+                    IntPoint point = GetPointFromString(currentCommand.data0);
+                    Console.Out.WriteLine("CLICKING " + point.x + "  " + point.y + "  " + int.Parse(currentCommand.data1));
+                    DoMouseClickAtWindow(currentlySelectedWindow, point.x, point.y);
+                    Thread.Sleep(int.Parse(currentCommand.data1));
+                }
+
+                currentCommandIndex++;
+
+                Thread.Sleep(100);
+            }
         }
 
         private void LabelUpdate()
@@ -331,6 +383,12 @@ namespace AutoClicker
         {
             return Array.TrueForAll<char>(Text2.ToCharArray(),
                 delegate (char c) { return char.IsDigit(c) || char.IsControl(c); });
+        }
+
+        public static IntPoint GetPointFromString(string str)
+        {
+            string[] values = str.Split(',');
+            return new IntPoint(int.Parse(values[0]), int.Parse(values[1]));
         }
     }
 }
