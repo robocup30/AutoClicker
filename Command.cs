@@ -26,17 +26,31 @@ namespace AutoClicker
         public string data1 { get; set; }
         public string data2 { get; set; }
         public string data3 { get; set; }
+        public string data4 { get; set; }       // Just in case for future
 
         public Command()
         {
             this.commandType = CommandType.Wait;
+            data0 = "";
             data1 = "";
+            data2 = "";
+            data3 = "";
+            data4 = "";
         }
 
-        public Command(CommandType type, string data)
+        public Command(CommandType type)
         {
             this.commandType = type;
-            this.data0 = data;
+        }
+
+        public Command(CommandType type = CommandType.Wait, string data0 = "", string data1= "", string data2 = "", string data3 = "", string data4 = "")
+        {
+            this.commandType = type;
+            this.data0 = data0;
+            this.data1 = data1;
+            this.data2 = data2;
+            this.data3 = data3;
+            this.data4 = data4;
         }
     }
 }

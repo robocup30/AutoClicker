@@ -149,8 +149,8 @@ namespace AutoClicker
         {
             InitializeComponent();
 
-            commands.Add(new Command(CommandType.Wait, "Command 1"));
-            commands.Add(new Command(CommandType.Click, "Command 2"));
+            commands.Add(new Command(CommandType.Wait, "Command 1", "f", "a", "c"));
+            commands.Add(new Command(CommandType.Click, "Command 2", "a", "fds", "das", "fds"));
 
             commandDataGrid.DataContext = commands;
 
