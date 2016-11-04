@@ -157,6 +157,7 @@ namespace AutoClicker
         bool threadShouldEnd = false;
 
         public List<Command> commands = new List<Command>();
+        public Dictionary<string, int> macroVariables = new Dictionary<string, int>();
 
         public MainWindow()
         {
@@ -250,18 +251,44 @@ namespace AutoClicker
                 }
                 else if (currentCommand.commandType == CommandType.JumpToLabel)
                 {
-                    for(int i = 0; i < commands.Count; ++i)
+                    int labelIndex = GetLabelIndex(currentCommand.data0);
+
+                    if(labelIndex != -1)
                     {
-                        Command labelCommand = commands[i];
-                        if(labelCommand.commandType == CommandType.Label && labelCommand.data0 == currentCommand.data0)
-                        {
-                            currentCommandIndex = i;
-                            shouldMoveToNext = false;
-                        }
+                        currentCommandIndex = labelIndex;
+                        shouldMoveToNext = false;
+                    }
+                    else
+                    {
+                        Console.WriteLine("COULD NOT FIND LABEL " + currentCommand.data0);
                     }
                 }
                 else if (currentCommand.commandType == CommandType.IfColorGoToLabel)
                 {
+                    Rect windowRect = new Rect();
+                    GetWindowRect(currentlySelectedWindow, ref windowRect);
+                    IntPoint point = GetPointFromString(currentCommand.data0);
+                    Color pixelColor = GetPixelColor(point.x + windowRect.Left, point.y + windowRect.Top);
+                    Color desiredColor = ParseStringToColor(currentCommand.data1);
+
+                    if(IsColorSimilar(pixelColor, desiredColor, int.Parse(currentCommand.data2)))
+                    {
+                        int labelIndex = GetLabelIndex(currentCommand.data0);
+
+                        if (labelIndex != -1)
+                        {
+                            currentCommandIndex = labelIndex;
+                            shouldMoveToNext = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("COULD NOT FIND LABEL " + currentCommand.data0);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("COLOR WAS DIFFERENT");
+                    }
 
                 }
                 else if (currentCommand.commandType == CommandType.WaitForColor)
@@ -270,11 +297,25 @@ namespace AutoClicker
                 }
                 else if (currentCommand.commandType == CommandType.SetVariable)
                 {
-
+                    if(macroVariables.ContainsKey(currentCommand.data0))
+                    {
+                        macroVariables[currentCommand.data0] = int.Parse(currentCommand.data1);
+                    }
+                    else
+                    {
+                        macroVariables.Add(currentCommand.data0, int.Parse(currentCommand.data1));
+                    }
                 }
                 else if (currentCommand.commandType == CommandType.ChangeVariableBy)
                 {
-
+                    if (macroVariables.ContainsKey(currentCommand.data0))
+                    {
+                        macroVariables[currentCommand.data0] += int.Parse(currentCommand.data1);
+                    }
+                    else
+                    {
+                        macroVariables.Add(currentCommand.data0, int.Parse(currentCommand.data1));
+                    }
                 }
                 else if (currentCommand.commandType == CommandType.IfVariableGoToLabel)
                 {
@@ -288,6 +329,21 @@ namespace AutoClicker
 
                 Thread.Sleep(100);
             }
+        }
+
+        // Return commands index of the label, returns -1 if not found
+        private int GetLabelIndex(string labelStr)
+        {
+            for (int i = 0; i < commands.Count; ++i)
+            {
+                Command labelCommand = commands[i];
+                if (labelCommand.commandType == CommandType.Label && labelCommand.data0 == labelStr)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         private void LabelUpdate()
@@ -430,6 +486,21 @@ namespace AutoClicker
         {
             string[] values = str.Split(',');
             return new IntPoint(int.Parse(values[0]), int.Parse(values[1]));
+        }
+
+        public static Color ParseStringToColor(string str)
+        {
+            string[] values = str.Split(',');
+            return Color.FromRgb(byte.Parse(values[0]), byte.Parse(values[1]), byte.Parse(values[2]));
+        }
+
+        public static bool IsColorSimilar(Color c1, Color c2, int tolerance)
+        {
+            int diffR = Math.Abs(c1.R - c2.R);
+            int diffG = Math.Abs(c1.G - c2.G);
+            int diffB = Math.Abs(c1.B - c2.B);
+
+            return diffR <= tolerance && diffG <= tolerance && diffB <= tolerance;
         }
     }
 }
