@@ -247,21 +247,11 @@ namespace AutoClicker
                 }
                 else if (currentCommand.commandType == CommandType.Label)
                 {
-
+                    // Nothing for label
                 }
                 else if (currentCommand.commandType == CommandType.JumpToLabel)
                 {
-                    int labelIndex = GetLabelIndex(currentCommand.data0);
-
-                    if(labelIndex != -1)
-                    {
-                        currentCommandIndex = labelIndex;
-                        shouldMoveToNext = false;
-                    }
-                    else
-                    {
-                        Console.WriteLine("COULD NOT FIND LABEL " + currentCommand.data0);
-                    }
+                    TryJumpToLabel(currentCommand.data0, ref currentCommandIndex, ref shouldMoveToNext);
                 }
                 else if (currentCommand.commandType == CommandType.IfColorGoToLabel)
                 {
@@ -273,17 +263,7 @@ namespace AutoClicker
 
                     if(IsColorSimilar(pixelColor, desiredColor, int.Parse(currentCommand.data2)))
                     {
-                        int labelIndex = GetLabelIndex(currentCommand.data0);
-
-                        if (labelIndex != -1)
-                        {
-                            currentCommandIndex = labelIndex;
-                            shouldMoveToNext = false;
-                        }
-                        else
-                        {
-                            Console.WriteLine("COULD NOT FIND LABEL " + currentCommand.data0);
-                        }
+                        TryJumpToLabel(currentCommand.data3, ref currentCommandIndex, ref shouldMoveToNext);
                     }
                     else
                     {
@@ -293,7 +273,25 @@ namespace AutoClicker
                 }
                 else if (currentCommand.commandType == CommandType.WaitForColor)
                 {
+                    Color desiredColor = ParseStringToColor(currentCommand.data1);
 
+                    while (true)
+                    {
+                        Rect windowRect = new Rect();
+                        GetWindowRect(currentlySelectedWindow, ref windowRect);
+                        IntPoint point = GetPointFromString(currentCommand.data0);
+                        Color pixelColor = GetPixelColor(point.x + windowRect.Left, point.y + windowRect.Top);
+
+                        if (IsColorSimilar(pixelColor, desiredColor, int.Parse(currentCommand.data2)))
+                        {
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("COLOR WAS DIFFERENT");
+                            Thread.Sleep(1000);
+                        }
+                    }
                 }
                 else if (currentCommand.commandType == CommandType.SetVariable)
                 {
@@ -319,6 +317,63 @@ namespace AutoClicker
                 }
                 else if (currentCommand.commandType == CommandType.IfVariableGoToLabel)
                 {
+                    if (!macroVariables.ContainsKey(currentCommand.data0))
+                    {
+                        macroVariables.Add(currentCommand.data0, 0);
+                    }
+
+                    // TODO
+                    /*
+                        EQ,
+                        NE,
+                        GT,
+                        LT,
+                        GE,
+                        LE
+                    */
+
+                    if(currentCommand.data1 == "EQ")
+                    {
+                        if(macroVariables[currentCommand.data0] == int.Parse(currentCommand.data2))
+                        {
+                            TryJumpToLabel(currentCommand.data3, ref currentCommandIndex, ref shouldMoveToNext);
+                        }
+                    }
+                    else if (currentCommand.data1 == "NE")
+                    {
+                        if (macroVariables[currentCommand.data0] != int.Parse(currentCommand.data2))
+                        {
+                            TryJumpToLabel(currentCommand.data3, ref currentCommandIndex, ref shouldMoveToNext);
+                        }
+                    }
+                    else if (currentCommand.data1 == "GT")
+                    {
+                        if (macroVariables[currentCommand.data0] > int.Parse(currentCommand.data2))
+                        {
+                            TryJumpToLabel(currentCommand.data3, ref currentCommandIndex, ref shouldMoveToNext);
+                        }
+                    }
+                    else if (currentCommand.data1 == "LT")
+                    {
+                        if (macroVariables[currentCommand.data0] < int.Parse(currentCommand.data2))
+                        {
+                            TryJumpToLabel(currentCommand.data3, ref currentCommandIndex, ref shouldMoveToNext);
+                        }
+                    }
+                    else if (currentCommand.data1 == "GE")
+                    {
+                        if (macroVariables[currentCommand.data0] >= int.Parse(currentCommand.data2))
+                        {
+                            TryJumpToLabel(currentCommand.data3, ref currentCommandIndex, ref shouldMoveToNext);
+                        }
+                    }
+                    else if (currentCommand.data1 == "LE")
+                    {
+                        if (macroVariables[currentCommand.data0] <= int.Parse(currentCommand.data2))
+                        {
+                            TryJumpToLabel(currentCommand.data3, ref currentCommandIndex, ref shouldMoveToNext);
+                        }
+                    }
 
                 }
 
@@ -328,6 +383,21 @@ namespace AutoClicker
                 }
 
                 Thread.Sleep(100);
+            }
+        }
+
+        private void TryJumpToLabel(string label, ref int currentCommandIndex, ref bool shouldMoveToNext)
+        {
+            int labelIndex = GetLabelIndex(label);
+
+            if (labelIndex != -1)
+            {
+                currentCommandIndex = labelIndex;
+                shouldMoveToNext = false;
+            }
+            else
+            {
+                Console.WriteLine("COULD NOT FIND LABEL " + label);
             }
         }
 

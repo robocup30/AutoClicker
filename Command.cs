@@ -19,6 +19,16 @@ namespace AutoClicker
         IfVariableGoToLabel,// Jump To Label if variable is OP to number            data0 = Variable, data1 = OP, data2 = #, data3 = Label
     }
 
+    public enum OpType
+    {
+        EQ,
+        NE,
+        GT,
+        LT,
+        GE,
+        LE
+    }
+
     public class Command
     {
         public CommandType commandType { get; set; }
