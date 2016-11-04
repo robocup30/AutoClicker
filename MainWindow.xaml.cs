@@ -572,5 +572,39 @@ namespace AutoClicker
 
             return diffR <= tolerance && diffG <= tolerance && diffB <= tolerance;
         }
+
+        private void MenuOpen_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog 
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+
+
+            // Set filter for file extension and default file extension 
+            dlg.DefaultExt = ".csv";
+            dlg.Filter = "CSV Files (*.csv)|*.csv";
+
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
+
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                // Open document 
+                string filename = dlg.FileName;
+            }
+        }
+
+        private void MenuSave_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void MenuSaveAs_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
