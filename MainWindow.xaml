@@ -34,7 +34,10 @@
         <DataGrid x:Name="commandDataGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="312" Width="315" ItemsSource="{Binding}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridComboBoxColumn  Header="CommandType" SelectedItemBinding="{Binding commandType}" ItemsSource="{Binding Source={StaticResource CommandType}}" Width="4*" />
-                <DataGridTextColumn Header="Data" Binding="{Binding data}" Width="4*" />
+                <DataGridTextColumn Header="Data1" Binding="{Binding data0}" Width="4*" />
+                <DataGridTextColumn Header="Data2" Binding="{Binding data1}" Width="4*" />
+                <DataGridTextColumn Header="Data3" Binding="{Binding data2}" Width="4*" />
+                <DataGridTextColumn Header="Data4" Binding="{Binding data3}" Width="4*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
