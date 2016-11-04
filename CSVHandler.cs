@@ -8,5 +8,12 @@ namespace AutoClicker
 {
     class CSVHandler
     {
+
+
+        public void ParseCSVToCommandList()
+        {
+
+        }
+
     }
 }

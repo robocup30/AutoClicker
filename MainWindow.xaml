@@ -19,6 +19,22 @@
     </Window.Resources>
 
     <Grid>
+
+
+
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open"/>
+                    <MenuItem Header="_Save"/>
+                    <MenuItem Header="_SaveAs"/>
+                </MenuItem>
+            </Menu>
+            <StackPanel></StackPanel>
+        </DockPanel>
+
+
+
         <Button Margin="173,47,199,213" Content="Start Clicking" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Label x:Name="absoluteLabel" Content="Absolute" HorizontalAlignment="Left" Margin="222,145,0,0" VerticalAlignment="Top" Width="96"/>
         <Label x:Name="relativeLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,198,0,0" VerticalAlignment="Top"/>
