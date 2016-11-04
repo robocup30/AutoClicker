@@ -156,7 +156,7 @@ namespace AutoClicker
         Thread macroThread;
         bool threadShouldEnd = false;
 
-        public List<Command> commands = new List<Command>();
+        public ObservableCollection<Command> commands = new ObservableCollection<Command>();
         public Dictionary<string, int> macroVariables = new Dictionary<string, int>();
 
         public CSVHandler csvHandler = new CSVHandler();
@@ -597,7 +597,7 @@ namespace AutoClicker
                 Console.WriteLine("OPENING FILE IS " + filename);
                 csvHandler.OpenFile(filename);
                 commands = csvHandler.ParseCurrentFile();
-                commandDataGrid.Items.Refresh();
+                commandDataGrid.DataContext = commands;
             }
         }
 

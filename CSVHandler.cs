@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -18,10 +19,10 @@ namespace AutoClicker
             currentFileName = fileName;
         }
 
-        public List<Command> ParseCurrentFile()
+        public ObservableCollection<Command> ParseCurrentFile()
         {
             List<string> rows = new List<string>();
-            List<Command> newCommandList = new List<Command>();
+            ObservableCollection<Command> newCommandList = new ObservableCollection<Command>();
 
             while (!reader.EndOfStream)
             {
@@ -45,12 +46,12 @@ namespace AutoClicker
             return newCommandList;
         }
 
-        public void SaveCurrentCommands(List<Command> commandList)
+        public void SaveCurrentCommands(ObservableCollection<Command> commandList)
         {
             SaveCurrentCommandsAs(currentFileName, commandList);
         }
 
-        public void SaveCurrentCommandsAs(string fileName, List<Command> commandList)
+        public void SaveCurrentCommandsAs(string fileName, ObservableCollection<Command> commandList)
         {
             Console.WriteLine("SAVING FILE AS " + fileName);
 
