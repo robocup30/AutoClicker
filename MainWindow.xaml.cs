@@ -242,6 +242,34 @@ namespace AutoClicker
                     DoMouseClickAtWindow(currentlySelectedWindow, point.x, point.y);
                     Thread.Sleep(int.Parse(currentCommand.data1));
                 }
+                else if (currentCommand.commandType == CommandType.Label)
+                {
+
+                }
+                else if (currentCommand.commandType == CommandType.JumpToLabel)
+                {
+
+                }
+                else if (currentCommand.commandType == CommandType.IfColorGoToLabel)
+                {
+
+                }
+                else if (currentCommand.commandType == CommandType.WaitForColor)
+                {
+
+                }
+                else if (currentCommand.commandType == CommandType.SetVariable)
+                {
+
+                }
+                else if (currentCommand.commandType == CommandType.ChangeVariableBy)
+                {
+
+                }
+                else if (currentCommand.commandType == CommandType.IfVariableGoToLabel)
+                {
+
+                }
 
                 currentCommandIndex++;
 
