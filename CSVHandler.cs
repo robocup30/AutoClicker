@@ -10,7 +10,7 @@ namespace AutoClicker
     public class CSVHandler
     {
         StreamReader reader;
-        string currentFileName = "";
+        public string currentFileName = "";
 
         public void OpenFile(string fileName)
         {
@@ -39,6 +39,8 @@ namespace AutoClicker
 
                 newCommandList.Add(newCommand);
             }
+
+            reader.Close();
 
             return newCommandList;
         }

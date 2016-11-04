@@ -596,12 +596,35 @@ namespace AutoClicker
                 string filename = dlg.FileName;
                 Console.WriteLine("OPENING FILE IS " + filename);
                 csvHandler.OpenFile(filename);
+                commands = csvHandler.ParseCurrentFile();
+                commandDataGrid.Items.Refresh();
             }
         }
 
         private void MenuSave_Click(object sender, RoutedEventArgs e)
         {
-            csvHandler.SaveCurrentCommands(commands);
+            if(string.IsNullOrWhiteSpace(csvHandler.currentFileName))
+            {
+                Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
+                dlg.FileName = "Document"; // Default file name
+                dlg.DefaultExt = ".csv"; // Default file extension
+                dlg.Filter = "CSV Files (*.csv)|*.csv";
+
+                // Show save file dialog box
+                Nullable<bool> result = dlg.ShowDialog();
+
+                // Process save file dialog box results
+                if (result == true)
+                {
+                    // Save document
+                    string filename = dlg.FileName;
+                    csvHandler.SaveCurrentCommandsAs(filename, commands);
+                }
+            }
+            else
+            {
+                csvHandler.SaveCurrentCommands(commands);
+            }
         }
 
         private void MenuSaveAs_Click(object sender, RoutedEventArgs e)
@@ -620,7 +643,6 @@ namespace AutoClicker
                 // Save document
                 string filename = dlg.FileName;
                 csvHandler.SaveCurrentCommandsAs(filename, commands);
-
             }
         }
     }
