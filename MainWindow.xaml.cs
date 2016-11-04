@@ -131,6 +131,7 @@ namespace AutoClicker
 
         public enum WMessages : int
         {
+            WM_MOUSEMOVE = 0x200,
             WM_LBUTTONDOWN = 0x201,
             WM_LBUTTONUP = 0x202,
             WM_LBUTTONDBLCLK = 0x203,
