@@ -223,6 +223,8 @@ namespace AutoClicker
             int currentCommandIndex = 0;
             while (!threadShouldEnd)
             {
+                bool shouldMoveToNext = true;
+
                 if(currentCommandIndex >= commands.Count)
                 {
                     break;
@@ -248,7 +250,15 @@ namespace AutoClicker
                 }
                 else if (currentCommand.commandType == CommandType.JumpToLabel)
                 {
-
+                    for(int i = 0; i < commands.Count; ++i)
+                    {
+                        Command labelCommand = commands[i];
+                        if(labelCommand.commandType == CommandType.Label && labelCommand.data0 == currentCommand.data0)
+                        {
+                            currentCommandIndex = i;
+                            shouldMoveToNext = false;
+                        }
+                    }
                 }
                 else if (currentCommand.commandType == CommandType.IfColorGoToLabel)
                 {
@@ -271,7 +281,10 @@ namespace AutoClicker
 
                 }
 
-                currentCommandIndex++;
+                if(shouldMoveToNext)
+                {
+                    currentCommandIndex++;
+                }
 
                 Thread.Sleep(100);
             }
