@@ -440,12 +440,12 @@ namespace AutoClicker
                         IntPoint dragPoint = IntPoint.LerpPoint(startPoint, endPoint, amount);
                         Console.WriteLine("DRAGGING TO " + dragPoint.x + "  " + dragPoint.y);
                         MoveMouseAtWindow(currentlySelectedWindow, dragPoint.x, dragPoint.y);
-                        amount += 20f / duration;
-                        Thread.Sleep(20);
+                        amount += 15f / duration;
+                        Thread.Sleep(15);
                     }
 
                     MoveMouseAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
-                    Thread.Sleep(1000);
+                    Thread.Sleep(100);
 
                     LeftMouseUpAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
 
