@@ -608,8 +608,8 @@ namespace AutoClicker
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
 
             // Set filter for file extension and default file extension 
-            dlg.DefaultExt = ".csv";
-            dlg.Filter = "CSV Files (*.csv)|*.csv";
+            dlg.DefaultExt = ".ayy";
+            dlg.Filter = "AYYYY Files (*.ayy)|*.ayy";
 
 
             // Display OpenFileDialog by calling ShowDialog method 
@@ -671,6 +671,11 @@ namespace AutoClicker
                 string filename = dlg.FileName;
                 csvHandler.SaveCurrentCommandsAs(filename, commands);
             }
+        }
+
+        private void commandDataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Header = (e.Row.GetIndex()).ToString();
         }
     }
 }

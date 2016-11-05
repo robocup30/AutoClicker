@@ -45,7 +45,7 @@
         <TextBlock x:Name="xCoordinateBoxLabel" HorizontalAlignment="Left" Margin="27,22,0,0" TextWrapping="Wrap" Text="X Coordinate" VerticalAlignment="Top" RenderTransformOrigin="0.224,0.438"/>
         <TextBlock x:Name="yCoordinateBoxLabel" HorizontalAlignment="Left" Margin="27,81,0,0" TextWrapping="Wrap" Text="Y Coordinate" VerticalAlignment="Top" RenderTransformOrigin="0.224,0.438"/>
         <Label x:Name="referenceLabel" Content="Relative" HorizontalAlignment="Left" Margin="10,281,0,0" VerticalAlignment="Top"/>
-        <DataGrid x:Name="commandDataGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="334" Width="503" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <DataGrid x:Name="commandDataGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="334" Width="503" ItemsSource="{Binding}" AutoGenerateColumns="False" LoadingRow="commandDataGrid_LoadingRow">
             <DataGrid.Columns>
                 <DataGridComboBoxColumn  Header="CommandType" SelectedItemBinding="{Binding commandType}" ItemsSource="{Binding Source={StaticResource CommandType}}" Width="4*" />
                 <DataGridTextColumn Header="Data0" Binding="{Binding data0}" Width="4*" />
