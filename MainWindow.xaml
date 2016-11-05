@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="725"
+        Title="MainWindow" Height="540" Width="725"
         Closing="Window_Closing">
 
     <Window.Resources>
@@ -53,6 +53,7 @@
             <Label x:Name="windowCoordinateLabel" Margin="10" Content="Window Coordinate" />
             <Button x:Name="FindWindowButton" Margin="10" Content="FindWindow" Click="FindWindowButton_Click" Padding="5" />
             <Button x:Name="insertRowButton" Margin="10" Content="InsertRowHere" Click="insertRowButton_Click" Padding="5" />
+            <Button x:Name="startFromSelectedButton" Margin="10" Content="Start From Here" Click="startFromSelectedButton_Click"  Padding="5"/>
             <Button x:Name="startButton" Margin="10" Content="Start Macro" Click="Button_Click" Padding="10"/>
         </StackPanel>
         

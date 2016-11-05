@@ -183,12 +183,14 @@ namespace AutoClicker
             if(macroThread == null || !macroThread.IsAlive)
             {
                 startButton.Content = "Stop Macro";
-                macroThread = new Thread(new ThreadStart(MacroUpdate));
+                startFromSelectedButton.Content = "Stop Macro";
+                macroThread = new Thread(() => MacroUpdate(0));
                 macroThread.Start();
             }
             else
             {
                 startButton.Content = "Start Macro";
+                startFromSelectedButton.Content = "Start From Here";
                 macroShouldEnd = true;
             }
 
@@ -230,9 +232,9 @@ namespace AutoClicker
             programClosing = true;
         }
 
-        private void MacroUpdate()
+        private void MacroUpdate(int startingIndex = 0)
         {
-            int currentCommandIndex = 0;
+            int currentCommandIndex = startingIndex;
             while (!programClosing && !macroShouldEnd)
             {
                 bool shouldMoveToNext = true;
@@ -403,7 +405,7 @@ namespace AutoClicker
 
             macroShouldEnd = false;
 
-            Dispatcher.Invoke(new Action(() =>
+            Dispatcher.BeginInvoke(new Action(() =>
             {
                 startButton.Content = "Start Macro";
             }));
@@ -721,6 +723,28 @@ namespace AutoClicker
                 {
                     row.Header = row.GetIndex().ToString();
                 }
+            }
+        }
+
+        private void startFromSelectedButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (macroThread == null || !macroThread.IsAlive)
+            {
+                startButton.Content = "Stop Macro";
+                startFromSelectedButton.Content = "Stop Macro";
+                int tempInt = commandDataGrid.SelectedIndex;
+                if(tempInt < 0)
+                {
+                    tempInt = 0;
+                }
+                macroThread = new Thread(() => MacroUpdate(tempInt));
+                macroThread.Start();
+            }
+            else
+            {
+                startButton.Content = "Start Macro";
+                startFromSelectedButton.Content = "Start From Here";
+                macroShouldEnd = true;
             }
         }
     }
