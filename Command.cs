@@ -17,6 +17,7 @@ namespace AutoClicker
         SetVariable,        // Set Variable x as y                                  data0 = Variable, data1 = Amount
         ChangeVariableBy,   // Change variable x by y                               data0 = Variable, data1 = Amount
         IfVariableGoToLabel,// Jump To Label if variable is OP to number            data0 = Variable, data1 = OP, data2 = #, data3 = Label
+        Drag,               // Click and drag cursor                                data0 = start coordinate, data1 = end coordinate, data2 = duration
     }
 
     public enum OpType

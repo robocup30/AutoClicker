@@ -127,10 +127,18 @@ namespace AutoClicker
                 this.x = v1;
                 this.y = v2;
             }
+
+            public static IntPoint LerpPoint(IntPoint p1, IntPoint p2, float amount)
+            {
+                int newX = (int)Lerp(p1.x, p2.x, amount);
+                int newY = (int)Lerp(p1.y, p2.y, amount);
+                return new IntPoint(newX, newY);
+            }
         }
 
         public enum WMessages : int
         {
+            MK_LBUTTON = 0x0001,
             WM_MOUSEMOVE = 0x200,
             WM_LBUTTONDOWN = 0x201,
             WM_LBUTTONUP = 0x202,
@@ -143,6 +151,11 @@ namespace AutoClicker
         private const int WH_MOUSE_LL = 14;
 
         private int MAKELPARAM(int p, int p_2)
+        {
+            return ((p_2 << 16) | (p & 0xFFFF));
+        }
+
+        private int MAKEWPARAM(int p, int p_2)
         {
             return ((p_2 << 16) | (p & 0xFFFF));
         }
@@ -218,6 +231,24 @@ namespace AutoClicker
             //SetForegroundWindow(window);
             SendMessage(window, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(x, y));
             SendMessage(window, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(x, y));
+        }
+
+        // X and Y is relative to the window
+        public void LeftMouseDownAtWindow(IntPtr window, int x, int y)
+        {
+            SendMessage(window, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(x, y));
+        }
+
+        // X and Y is relative to the window
+        public void LeftMouseUpAtWindow(IntPtr window, int x, int y)
+        {
+            SendMessage(window, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(x, y));
+        }
+
+        // X and Y is relative to the window
+        public void MoveMouseUpAtWindow(IntPtr window, int x, int y)
+        {
+            SendMessage(window, (int)WMessages.WM_MOUSEMOVE, (int)WMessages.MK_LBUTTON, MAKELPARAM(x, y));
         }
 
         public static Point GetMousePosition()
@@ -340,7 +371,6 @@ namespace AutoClicker
                         macroVariables.Add(currentCommand.data0, 0);
                     }
 
-                    // TODO
                     /*
                         EQ,
                         NE,
@@ -392,6 +422,32 @@ namespace AutoClicker
                             TryJumpToLabel(currentCommand.data3, ref currentCommandIndex, ref shouldMoveToNext);
                         }
                     }
+                }
+                else if(currentCommand.commandType == CommandType.Drag)
+                {
+                    // TODO
+                    IntPoint startPoint = GetPointFromString(currentCommand.data0);
+                    IntPoint endPoint = GetPointFromString(currentCommand.data1);
+
+                    //LeftMouseDownAtWindow(currentlySelectedWindow, startPoint.x, startPoint.y);
+
+                    int duration = int.Parse(currentCommand.data2);
+
+                    float amount = 0;
+
+                    while(amount < 1)
+                    {
+                        IntPoint dragPoint = IntPoint.LerpPoint(startPoint, endPoint, amount);
+                        Console.WriteLine("DRAGGING TO " + dragPoint.x + "  " + dragPoint.y);
+                        MoveMouseUpAtWindow(currentlySelectedWindow, dragPoint.x, dragPoint.y);
+                        amount += 20f / duration;
+                        Thread.Sleep(20);
+                    }
+
+                    MoveMouseUpAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
+                    Thread.Sleep(1000);
+
+                    //LeftMouseUpAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
 
                 }
 
@@ -408,6 +464,7 @@ namespace AutoClicker
             Dispatcher.BeginInvoke(new Action(() =>
             {
                 startButton.Content = "Start Macro";
+                startFromSelectedButton.Content = "Start From Here";
             }));
         }
 
@@ -746,6 +803,11 @@ namespace AutoClicker
                 startFromSelectedButton.Content = "Start From Here";
                 macroShouldEnd = true;
             }
+        }
+
+        public static float Lerp(float value1, float value2, float amount)
+        {
+            return value1 + (value2 - value1) * amount;
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="540" Width="725"
+        Title="But why" Height="550" Width="725"
         Closing="Window_Closing">
 
     <Window.Resources>
