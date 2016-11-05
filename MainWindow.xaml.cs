@@ -514,6 +514,7 @@ namespace AutoClicker
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
                     absoluteLabel.Content = p.X + ", " + p.Y + "      color: " + c.R + " " + c.G + " " + c.B;
+                    absoluteRect.Fill = new SolidColorBrush(c);
 
                     windowCoordinateLabel.Content = "Handle is " + currentlySelectedWindow + " X: " + windowRect.Left + "  Y: " + windowRect.Top;
 
@@ -524,9 +525,11 @@ namespace AutoClicker
 
                     Color windowColor = GetPixelColorFromWindow(IntPtr.Zero, int.Parse(xCoordinateBox.Text) + windowRect.Left, int.Parse(yCoordinateBox.Text) + windowRect.Top);
                     relativeLabel.Content = xCoordinateBox.Text + ", " + yCoordinateBox.Text + "      color: " + windowColor.R + " " + windowColor.G + " " + windowColor.B;
+                    relativeRect.Fill = new SolidColorBrush(windowColor);
 
                     Color windowColor2 = GetPixelColorFromWindow(IntPtr.Zero, (int)p.X, (int)p.Y);
                     referenceLabel.Content = ((int)p.X - windowRect.Left) + ", " + ((int)p.Y - windowRect.Top) + "      color: " + windowColor2.R + " " + windowColor2.G + " " + windowColor2.B;
+                    referenceRect.Fill = new SolidColorBrush(windowColor2);
 
                     /*
                     Console.Write((200 + windowRect.Left) + ",  " + (200 + windowRect.Top) + "   ");
