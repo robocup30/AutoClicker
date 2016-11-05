@@ -683,6 +683,36 @@ namespace AutoClicker
             if(int.Parse(insertRowBox.Text) <= commands.Count)
             {
                 commands.Insert(int.Parse(insertRowBox.Text), new Command());
+
+                for (int i = 0; i < commandDataGrid.Items.Count; i++)
+                {
+                    DataGridRow row = (DataGridRow)commandDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
+                    if(row != null)
+                    {
+                        row.Header = row.GetIndex().ToString();
+                    }
+                }
+            }
+        }
+
+        private void commandDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            for (int i = 0; i < commandDataGrid.Items.Count; i++)
+            {
+                DataGridRow row = (DataGridRow)commandDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
+                row.Header = row.GetIndex().ToString();
+            }
+        }
+
+        private void commandDataGrid_UnloadingRow(object sender, DataGridRowEventArgs e)
+        {
+            for (int i = 0; i < commandDataGrid.Items.Count; i++)
+            {
+                DataGridRow row = (DataGridRow)commandDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
+                if (row != null)
+                {
+                    row.Header = row.GetIndex().ToString();
+                }
             }
         }
     }
