@@ -812,5 +812,25 @@ namespace AutoClicker
         {
             return value1 + (value2 - value1) * amount;
         }
+
+        public void TakeScreenShot()
+        {
+            Rect rect = new Rect();
+            GetWindowRect(currentlySelectedWindow, ref rect);
+
+            int width = rect.Right - rect.Left;
+            int height = rect.Bottom - rect.Top;
+
+            System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bmp);
+            graphics.CopyFromScreen(rect.Left, rect.Top, 0, 0, new System.Drawing.Size(width, height), System.Drawing.CopyPixelOperation.SourceCopy);
+
+            bmp.Save("c:\\Users\\Joseph\\Desktop\\testSS.png", System.Drawing.Imaging.ImageFormat.Png);
+        }
+
+        private void screenShotButton_Click(object sender, RoutedEventArgs e)
+        {
+            TakeScreenShot();
+        }
     }
 }
