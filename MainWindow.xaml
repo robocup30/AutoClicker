@@ -47,13 +47,13 @@
             <TextBox x:Name="xCoordinateBox" Margin="10" TextWrapping="Wrap" Text="0" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
             <TextBlock x:Name="yCoordinateBoxLabel" Margin="10, 0, 10, -5" TextWrapping="Wrap" Text="Y Coordinate" />
             <TextBox x:Name="yCoordinateBox" Margin="10" TextWrapping="Wrap" Text="0" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
-            <Button x:Name="startButton" Margin="10" Content="Start Macro" Click="Button_Click"/>
-            <Button x:Name="insertRowButton" Margin="10" Content="InsertRowHere" Click="insertRowButton_Click" />
             <Label x:Name="absoluteLabel" Margin="10" Content="Absolute" />
             <Label x:Name="referenceLabel" Margin="10" Content="Reference" />
             <Label x:Name="relativeLabel" Margin="10" Content="Relative" />
             <Label x:Name="windowCoordinateLabel" Margin="10" Content="Window Coordinate" />
-            <Button x:Name="FindWindowButton" Margin="10" Content="FindWindow" Click="FindWindowButton_Click" />
+            <Button x:Name="FindWindowButton" Margin="10" Content="FindWindow" Click="FindWindowButton_Click" Padding="5" />
+            <Button x:Name="insertRowButton" Margin="10" Content="InsertRowHere" Click="insertRowButton_Click" Padding="5" />
+            <Button x:Name="startButton" Margin="10" Content="Start Macro" Click="Button_Click" Padding="10"/>
         </StackPanel>
         
         <DataGrid x:Name="commandDataGrid" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding}" AutoGenerateColumns="False" LoadingRow="commandDataGrid_LoadingRow" CellEditEnding="commandDataGrid_CellEditEnding" UnloadingRow="commandDataGrid_UnloadingRow" >
