@@ -677,5 +677,13 @@ namespace AutoClicker
         {
             e.Row.Header = (e.Row.GetIndex()).ToString();
         }
+
+        private void insertRowButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(int.Parse(insertRowBox.Text) <= commands.Count)
+            {
+                commands.Insert(int.Parse(insertRowBox.Text), new Command());
+            }
+        }
     }
 }
