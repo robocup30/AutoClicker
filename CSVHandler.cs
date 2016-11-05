@@ -27,7 +27,7 @@ namespace AutoClicker
             while (!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
-                string[] values = line.Split(',');
+                string[] values = line.Split(';');
 
                 Command newCommand = new Command();
                 CommandType commandType = (CommandType)Enum.Parse(typeof(CommandType), values[0], true);
@@ -59,7 +59,7 @@ namespace AutoClicker
             {
                 foreach (Command command in commandList)
                 {
-                    string line = command.commandType.ToString() + "," + command.data0 + "," + command.data1 + "," + command.data2 + "," + command.data3 + "," + command.data4;
+                    string line = command.commandType.ToString() + ";" + command.data0 + ";" + command.data1 + ";" + command.data2 + ";" + command.data3 + ";" + command.data4;
                     file.WriteLine(line);
                 }
             }

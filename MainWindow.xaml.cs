@@ -613,8 +613,8 @@ namespace AutoClicker
             {
                 Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
                 dlg.FileName = "Document"; // Default file name
-                dlg.DefaultExt = ".csv"; // Default file extension
-                dlg.Filter = "CSV Files (*.csv)|*.csv";
+                dlg.DefaultExt = ".ayy"; // Default file extension
+                dlg.Filter = "AYYYY Files (*.ayy)|*.ayy";
 
                 // Show save file dialog box
                 Nullable<bool> result = dlg.ShowDialog();
@@ -637,8 +637,8 @@ namespace AutoClicker
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
             dlg.FileName = "Document"; // Default file name
-            dlg.DefaultExt = ".csv"; // Default file extension
-            dlg.Filter = "CSV Files (*.csv)|*.csv";
+            dlg.DefaultExt = ".ayy"; // Default file extension
+            dlg.Filter = "AYYYY Files (*.ayy)|*.ayy";
 
             // Show save file dialog box
             Nullable<bool> result = dlg.ShowDialog();
