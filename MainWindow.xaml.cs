@@ -425,7 +425,7 @@ namespace AutoClicker
                 }
                 else if(currentCommand.commandType == CommandType.Drag)
                 {
-                    // TODO
+                    // Drag sometimes need mouse to be on top of window
                     IntPoint startPoint = GetPointFromString(currentCommand.data0);
                     IntPoint endPoint = GetPointFromString(currentCommand.data1);
 
