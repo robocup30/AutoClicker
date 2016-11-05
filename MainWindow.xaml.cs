@@ -246,9 +246,9 @@ namespace AutoClicker
         }
 
         // X and Y is relative to the window
-        public void MoveMouseUpAtWindow(IntPtr window, int x, int y)
+        public void MoveMouseAtWindow(IntPtr window, int x, int y)
         {
-            SendMessage(window, (int)WMessages.WM_MOUSEMOVE, (int)WMessages.MK_LBUTTON, MAKELPARAM(x, y));
+            SendMessage(window, (int)WMessages.WM_MOUSEMOVE, 0, MAKELPARAM(x, y));
         }
 
         public static Point GetMousePosition()
@@ -429,7 +429,7 @@ namespace AutoClicker
                     IntPoint startPoint = GetPointFromString(currentCommand.data0);
                     IntPoint endPoint = GetPointFromString(currentCommand.data1);
 
-                    //LeftMouseDownAtWindow(currentlySelectedWindow, startPoint.x, startPoint.y);
+                    LeftMouseDownAtWindow(currentlySelectedWindow, startPoint.x, startPoint.y);
 
                     int duration = int.Parse(currentCommand.data2);
 
@@ -439,15 +439,15 @@ namespace AutoClicker
                     {
                         IntPoint dragPoint = IntPoint.LerpPoint(startPoint, endPoint, amount);
                         Console.WriteLine("DRAGGING TO " + dragPoint.x + "  " + dragPoint.y);
-                        MoveMouseUpAtWindow(currentlySelectedWindow, dragPoint.x, dragPoint.y);
+                        MoveMouseAtWindow(currentlySelectedWindow, dragPoint.x, dragPoint.y);
                         amount += 20f / duration;
                         Thread.Sleep(20);
                     }
 
-                    MoveMouseUpAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
+                    MoveMouseAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
                     Thread.Sleep(1000);
 
-                    //LeftMouseUpAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
+                    LeftMouseUpAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
 
                 }
 
