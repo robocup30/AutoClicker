@@ -37,6 +37,7 @@ namespace AutoClicker
         public string data2 { get; set; }
         public string data3 { get; set; }
         public string data4 { get; set; }       // Just in case for future
+        public string comment { get; set; }
 
         public Command()
         {
@@ -46,6 +47,7 @@ namespace AutoClicker
             data2 = "";
             data3 = "";
             data4 = "";
+            comment = "";
         }
 
         public Command(CommandType type)
@@ -53,7 +55,7 @@ namespace AutoClicker
             this.commandType = type;
         }
 
-        public Command(CommandType type = CommandType.Wait, string data0 = "", string data1= "", string data2 = "", string data3 = "", string data4 = "")
+        public Command(CommandType type = CommandType.Wait, string data0 = "", string data1= "", string data2 = "", string data3 = "", string data4 = "", string comment = "")
         {
             this.commandType = type;
             this.data0 = data0;
@@ -61,6 +63,7 @@ namespace AutoClicker
             this.data2 = data2;
             this.data3 = data3;
             this.data4 = data4;
+            this.comment = comment;
         }
     }
 }

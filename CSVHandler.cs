@@ -37,6 +37,7 @@ namespace AutoClicker
                 newCommand.data2 = values[3];
                 newCommand.data3 = values[4];
                 newCommand.data4 = values[5];
+                newCommand.comment = values[6];
 
                 newCommandList.Add(newCommand);
             }
@@ -59,7 +60,7 @@ namespace AutoClicker
             {
                 foreach (Command command in commandList)
                 {
-                    string line = command.commandType.ToString() + ";" + command.data0 + ";" + command.data1 + ";" + command.data2 + ";" + command.data3 + ";" + command.data4;
+                    string line = command.commandType.ToString() + ";" + command.data0 + ";" + command.data1 + ";" + command.data2 + ";" + command.data3 + ";" + command.data4 + ";" + command.comment;
                     file.WriteLine(line);
                 }
             }

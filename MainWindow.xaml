@@ -53,6 +53,7 @@
                 <DataGridTextColumn Header="Data2" Binding="{Binding data2}" Width="4*" />
                 <DataGridTextColumn Header="Data3" Binding="{Binding data3}" Width="4*" />
                 <DataGridTextColumn Header="Data4" Binding="{Binding data4}" Width="4*" />
+                <DataGridTextColumn Header="Comment" Binding="{Binding comment}" Width="4*" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
