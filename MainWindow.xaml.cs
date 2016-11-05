@@ -700,7 +700,10 @@ namespace AutoClicker
             for (int i = 0; i < commandDataGrid.Items.Count; i++)
             {
                 DataGridRow row = (DataGridRow)commandDataGrid.ItemContainerGenerator.ContainerFromIndex(i);
-                row.Header = row.GetIndex().ToString();
+                if (row != null)
+                {
+                    row.Header = row.GetIndex().ToString();
+                }
             }
         }
 
