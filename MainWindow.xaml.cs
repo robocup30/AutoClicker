@@ -685,9 +685,9 @@ namespace AutoClicker
 
         private void insertRowButton_Click(object sender, RoutedEventArgs e)
         {
-            if(int.Parse(insertRowBox.Text) <= commands.Count)
+            if(commandDataGrid.SelectedIndex <= commands.Count && commandDataGrid.SelectedIndex >= 0)
             {
-                commands.Insert(int.Parse(insertRowBox.Text), new Command());
+                commands.Insert(commandDataGrid.SelectedIndex, new Command());
 
                 for (int i = 0; i < commandDataGrid.Items.Count; i++)
                 {
