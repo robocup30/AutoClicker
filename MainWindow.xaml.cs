@@ -456,7 +456,7 @@ namespace AutoClicker
                 {
                     absoluteLabel.Content = p.X + ", " + p.Y + "      color: " + c.R + " " + c.G + " " + c.B;
 
-                    windowCoordinateLabel.Content = "Window handle is " + currentlySelectedWindow + " X: " + windowRect.Left + "  Y: " + windowRect.Top;
+                    windowCoordinateLabel.Content = "Handle is " + currentlySelectedWindow + " X: " + windowRect.Left + "  Y: " + windowRect.Top;
 
                     /*
                     Color windowColor = GetPixelColorFromWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));

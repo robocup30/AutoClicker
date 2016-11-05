@@ -19,10 +19,18 @@
     </Window.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
 
-
-        <DockPanel>
+        <DockPanel Grid.Row="0" Grid.ColumnSpan="2">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Open" Click="MenuOpen_Click"/>
@@ -34,20 +42,21 @@
         </DockPanel>
 
 
-        <StackPanel Width="100" HorizontalAlignment="Left" Margin="0, 30, 0, 0">
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Width="250" HorizontalAlignment="Left">
             <TextBlock x:Name="xCoordinateBoxLabel" Margin="10, 10, 10, -5" TextWrapping="Wrap" Text="X Coordinate" />
             <TextBox x:Name="xCoordinateBox" Margin="10" TextWrapping="Wrap" Text="0" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
             <TextBlock x:Name="yCoordinateBoxLabel" Margin="10, 0, 10, -5" TextWrapping="Wrap" Text="Y Coordinate" />
             <TextBox x:Name="yCoordinateBox" Margin="10" TextWrapping="Wrap" Text="0" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
+            <Button x:Name="startButton" Margin="10" Content="Start Macro" Click="Button_Click"/>
+            <Button x:Name="insertRowButton" Margin="10" Content="InsertRowHere" Click="insertRowButton_Click" />
+            <Label x:Name="absoluteLabel" Margin="10" Content="Absolute" />
+            <Label x:Name="referenceLabel" Margin="10" Content="Reference" />
+            <Label x:Name="relativeLabel" Margin="10" Content="Relative" />
+            <Label x:Name="windowCoordinateLabel" Margin="10" Content="Window Coordinate" />
+            <Button x:Name="FindWindowButton" Margin="10" Content="FindWindow" Click="FindWindowButton_Click" />
         </StackPanel>
-
-        <Button x:Name="startButton" Margin="310,57,0,0" Content="Start Macro" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="123"/>
-        <Label x:Name="absoluteLabel" Content="Absolute" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="relativeLabel" Content="Relative" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="windowCoordinateLabel" Content="Window Coordinate" HorizontalAlignment="Left" Margin="10,312,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="FindWindowButton" Content="FindWindow" HorizontalAlignment="Left" Margin="555,57,0,0" VerticalAlignment="Top" Width="114" Click="FindWindowButton_Click" Height="40"/>
-        <Label x:Name="referenceLabel" Content="Relative" HorizontalAlignment="Left" Margin="10,281,0,0" VerticalAlignment="Top"/>
-        <DataGrid x:Name="commandDataGrid" HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding}" AutoGenerateColumns="False" LoadingRow="commandDataGrid_LoadingRow" CellEditEnding="commandDataGrid_CellEditEnding" UnloadingRow="commandDataGrid_UnloadingRow" Margin="202,150,0,0">
+        
+        <DataGrid x:Name="commandDataGrid" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding}" AutoGenerateColumns="False" LoadingRow="commandDataGrid_LoadingRow" CellEditEnding="commandDataGrid_CellEditEnding" UnloadingRow="commandDataGrid_UnloadingRow" >
             <DataGrid.Columns>
                 <DataGridComboBoxColumn  Header="CommandType" SelectedItemBinding="{Binding commandType}" ItemsSource="{Binding Source={StaticResource CommandType}}" Width="4*" />
                 <DataGridTextColumn Header="Data0" Binding="{Binding data0}" Width="4*" />
@@ -58,6 +67,5 @@
                 <DataGridTextColumn Header="Comment" Binding="{Binding comment}" Width="4*" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="insertRowButton" Margin="72,180,0,0" Content="InsertRowHere" Click="insertRowButton_Click"  HorizontalAlignment="Left" VerticalAlignment="Top" Height="21" Width="99"/>
     </Grid>
 </Window>
