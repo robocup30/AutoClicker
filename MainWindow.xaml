@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="500" Width="725"
         Closing="Window_Closing">
-    
+
     <Window.Resources>
         <!--Create list of enumeration values-->
         <ObjectDataProvider x:Key="CommandType" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
@@ -35,17 +35,17 @@
 
 
 
-        <Button Margin="173,47,199,213" Content="Start Clicking" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Label x:Name="absoluteLabel" Content="Absolute" HorizontalAlignment="Left" Margin="222,145,0,0" VerticalAlignment="Top" Width="96"/>
-        <Label x:Name="relativeLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,198,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="windowCoordinateLabel" Content="Window Coordinate" HorizontalAlignment="Left" Margin="188,270,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="FindWindowButton" Content="FindWindow" HorizontalAlignment="Left" Margin="360,57,0,0" VerticalAlignment="Top" Width="114" Click="FindWindowButton_Click" Height="40"/>
+        <Button x:Name="startButton" Margin="310,57,0,0" Content="Start Macro" Click="Button_Click" HorizontalAlignment="Left" VerticalAlignment="Top" Height="40" Width="123"/>
+        <Label x:Name="absoluteLabel" Content="Absolute" HorizontalAlignment="Left" Margin="10,219,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="relativeLabel" Content="Relative" HorizontalAlignment="Left" Margin="10,250,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="windowCoordinateLabel" Content="Window Coordinate" HorizontalAlignment="Left" Margin="10,312,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="FindWindowButton" Content="FindWindow" HorizontalAlignment="Left" Margin="555,57,0,0" VerticalAlignment="Top" Width="114" Click="FindWindowButton_Click" Height="40"/>
         <TextBox x:Name="xCoordinateBox" HorizontalAlignment="Left" Height="23" Margin="27,43,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
         <TextBox x:Name="yCoordinateBox" HorizontalAlignment="Left" Height="23" Margin="27,102,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="120" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
         <TextBlock x:Name="xCoordinateBoxLabel" HorizontalAlignment="Left" Margin="27,22,0,0" TextWrapping="Wrap" Text="X Coordinate" VerticalAlignment="Top" RenderTransformOrigin="0.224,0.438"/>
         <TextBlock x:Name="yCoordinateBoxLabel" HorizontalAlignment="Left" Margin="27,81,0,0" TextWrapping="Wrap" Text="Y Coordinate" VerticalAlignment="Top" RenderTransformOrigin="0.224,0.438"/>
-        <Label x:Name="referenceLabel" Content="Relative" HorizontalAlignment="Left" Margin="222,239,0,0" VerticalAlignment="Top"/>
-        <DataGrid x:Name="commandDataGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="312" Width="315" ItemsSource="{Binding}" AutoGenerateColumns="False">
+        <Label x:Name="referenceLabel" Content="Relative" HorizontalAlignment="Left" Margin="10,281,0,0" VerticalAlignment="Top"/>
+        <DataGrid x:Name="commandDataGrid" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="334" Width="503" ItemsSource="{Binding}" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridComboBoxColumn  Header="CommandType" SelectedItemBinding="{Binding commandType}" ItemsSource="{Binding Source={StaticResource CommandType}}" Width="4*" />
                 <DataGridTextColumn Header="Data0" Binding="{Binding data0}" Width="4*" />

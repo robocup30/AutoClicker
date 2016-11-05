@@ -155,7 +155,8 @@ namespace AutoClicker
         private static IntPtr _hookID = IntPtr.Zero;
         Thread cursorThread;
         Thread macroThread;
-        bool threadShouldEnd = false;
+        bool programClosing = false;
+        bool macroShouldEnd = false;
 
         public ObservableCollection<Command> commands = new ObservableCollection<Command>();
         public Dictionary<string, int> macroVariables = new Dictionary<string, int>();
@@ -167,8 +168,8 @@ namespace AutoClicker
             InitializeComponent();
 
             commands.Add(new Command(CommandType.Wait, "1000", "f", "a", "c"));
-            commands.Add(new Command(CommandType.Click, "50, 50", "2000", "fds", "das", "fds"));
-            commands.Add(new Command(CommandType.Click, "334, 223", "2000", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.Click, "50, 50", "1000", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.Click, "334, 223", "1000", "fds", "das", "fds"));
 
             commandDataGrid.DataContext = commands;
 
@@ -181,9 +182,16 @@ namespace AutoClicker
         {
             if(macroThread == null || !macroThread.IsAlive)
             {
+                startButton.Content = "Stop Macro";
                 macroThread = new Thread(new ThreadStart(MacroUpdate));
                 macroThread.Start();
             }
+            else
+            {
+                startButton.Content = "Start Macro";
+                macroShouldEnd = true;
+            }
+
             //DoMouseClickAtWindow(currentlySelectedWindow, 250, 450);
             //DoMouseClickAtWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
         }
@@ -219,13 +227,13 @@ namespace AutoClicker
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            threadShouldEnd = true;
+            programClosing = true;
         }
 
         private void MacroUpdate()
         {
             int currentCommandIndex = 0;
-            while (!threadShouldEnd)
+            while (!programClosing && !macroShouldEnd)
             {
                 bool shouldMoveToNext = true;
 
@@ -392,6 +400,13 @@ namespace AutoClicker
 
                 Thread.Sleep(100);
             }
+
+            macroShouldEnd = false;
+
+            Dispatcher.Invoke(new Action(() =>
+            {
+                startButton.Content = "Start Macro";
+            }));
         }
 
         private void TryJumpToLabel(string label, ref int currentCommandIndex, ref bool shouldMoveToNext)
@@ -426,7 +441,7 @@ namespace AutoClicker
 
         private void LabelUpdate()
         {
-            while (!threadShouldEnd)
+            while (!programClosing)
             {
                 //Logic
                 Point p = GetMousePosition();
