@@ -284,13 +284,11 @@ namespace AutoClicker
 
                 if (currentCommand.commandType == CommandType.Wait)
                 {
-                    Console.Out.WriteLine("SLEEPING " + int.Parse(currentCommand.data0));
                     Thread.Sleep(int.Parse(currentCommand.data0));
                 }
                 else if(currentCommand.commandType == CommandType.Click)
                 {
                     IntPoint point = GetPointFromString(currentCommand.data0);
-                    Console.Out.WriteLine("CLICKING " + point.x + "  " + point.y + "  " + int.Parse(currentCommand.data1));
                     DoMouseClickAtWindow(currentlySelectedWindow, point.x, point.y);
                     Thread.Sleep(int.Parse(currentCommand.data1));
                 }
@@ -316,7 +314,7 @@ namespace AutoClicker
                     }
                     else
                     {
-                        Console.WriteLine("COLOR WAS DIFFERENT");
+                        Console.WriteLine("COLOR WAS DIFFERENT AT " + currentCommandIndex + "  " + colorToString(pixelColor) + "  " + colorToString(desiredColor));
                     }
 
                 }
@@ -337,7 +335,7 @@ namespace AutoClicker
                         }
                         else
                         {
-                            Console.WriteLine("COLOR WAS DIFFERENT");
+                            Console.WriteLine("COLOR WAS DIFFERENT" + currentCommandIndex + "  " + colorToString(pixelColor) + "  " + colorToString(desiredColor));
                             Thread.Sleep(1000);
                         }
                     }
@@ -543,7 +541,7 @@ namespace AutoClicker
                     */
                 }));
 
-                Thread.Sleep(100);
+                Thread.Sleep(500);
             }
         }
 
@@ -843,6 +841,11 @@ namespace AutoClicker
         private void screenShotButton_Click(object sender, RoutedEventArgs e)
         {
             TakeScreenShot();
+        }
+
+        public string colorToString(Color c)
+        {
+            return "" + c.R + " " + c.G + " " + c.B;
         }
     }
 }
