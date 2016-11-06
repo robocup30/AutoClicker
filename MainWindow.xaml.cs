@@ -95,6 +95,21 @@ namespace AutoClicker
         [DllImport("user32.dll", SetLastError = true)]
         static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int Width, int Height, bool Repaint);
 
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct FLASHWINFO
+        {
+            public UInt32 cbSize;
+            public IntPtr hwnd;
+            public UInt32 dwFlags;
+            public UInt32 uCount;
+            public UInt32 dwTimeout;
+        }
+
+        public const UInt32 FLASHW_ALL = 3;
 
         public struct Rect
         {
@@ -457,8 +472,12 @@ namespace AutoClicker
                     string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-tt");
                     TakeScreenShot(currentCommand.data0 + dateString + ".png");
                 }
+                else if (currentCommand.commandType == CommandType.Flash)
+                {
+                    FlashWindow();
+                }
 
-                if(shouldMoveToNext)
+                if (shouldMoveToNext)
                 {
                     currentCommandIndex++;
                 }
@@ -859,6 +878,20 @@ namespace AutoClicker
             Rect rect = new Rect();
             GetWindowRect(currentlySelectedWindow, ref rect);
             MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 651, 437, true);
+        }
+
+        private void FlashWindow()
+        {
+            Console.WriteLine("FLASHING WINDOW " + currentlySelectedWindow);
+            FLASHWINFO fInfo = new FLASHWINFO();
+
+            fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
+            fInfo.hwnd = currentlySelectedWindow;
+            fInfo.dwFlags = FLASHW_ALL;
+            fInfo.uCount = 0;
+            fInfo.dwTimeout = 0;
+
+            FlashWindowEx(ref fInfo);
         }
     }
 }
