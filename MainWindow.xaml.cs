@@ -233,6 +233,7 @@ namespace AutoClicker
 
             //SetForegroundWindow(window);
             SendMessage(window, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(x, y));
+            Thread.Sleep(50);
             SendMessage(window, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(x, y));
         }
 
