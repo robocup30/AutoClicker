@@ -42,7 +42,7 @@
         </DockPanel>
 
 
-        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Width="250" HorizontalAlignment="Left">
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Width="300" HorizontalAlignment="Left">
             <TextBlock x:Name="xCoordinateBoxLabel" Margin="10, 10, 10, -5" TextWrapping="Wrap" Text="X Coordinate" />
             <TextBox x:Name="xCoordinateBox" Margin="10" TextWrapping="Wrap" Text="0" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
             <TextBlock x:Name="yCoordinateBoxLabel" Margin="10, 0, 10, -5" TextWrapping="Wrap" Text="Y Coordinate" />

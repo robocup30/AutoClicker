@@ -857,7 +857,7 @@ namespace AutoClicker
         {
             Rect rect = new Rect();
             GetWindowRect(currentlySelectedWindow, ref rect);
-            MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 627, 420, true);
+            MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 651, 437, true);
         }
     }
 }
