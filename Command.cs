@@ -18,6 +18,7 @@ namespace AutoClicker
         ChangeVariableBy,   // Change variable x by y                               data0 = Variable, data1 = Amount
         IfVariableGoToLabel,// Jump To Label if variable is OP to number            data0 = Variable, data1 = OP, data2 = #, data3 = Label
         Drag,               // Click and drag cursor                                data0 = start coordinate, data1 = end coordinate, data2 = duration
+        ScreenShot,         // Take screenshot                                      data0 = file location (will be time stamped for name)   eg C:\Users\Joseph\Desktop\
     }
 
     public enum OpType

@@ -450,6 +450,11 @@ namespace AutoClicker
                     LeftMouseUpAtWindow(currentlySelectedWindow, endPoint.x, endPoint.y);
 
                 }
+                else if(currentCommand.commandType == CommandType.ScreenShot)
+                {
+                    string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-tt");
+                    TakeScreenShot(currentCommand.data0 + dateString + ".png");
+                }
 
                 if(shouldMoveToNext)
                 {
@@ -815,6 +820,11 @@ namespace AutoClicker
 
         public void TakeScreenShot()
         {
+            TakeScreenShot("c:\\Users\\Joseph\\Desktop\\testSS.png");
+        }
+
+        public void TakeScreenShot(string fileName)
+        {
             Rect rect = new Rect();
             GetWindowRect(currentlySelectedWindow, ref rect);
 
@@ -825,8 +835,10 @@ namespace AutoClicker
             System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bmp);
             graphics.CopyFromScreen(rect.Left, rect.Top, 0, 0, new System.Drawing.Size(width, height), System.Drawing.CopyPixelOperation.SourceCopy);
 
-            bmp.Save("c:\\Users\\Joseph\\Desktop\\testSS.png", System.Drawing.Imaging.ImageFormat.Png);
+            bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
         }
+
+
 
         private void screenShotButton_Click(object sender, RoutedEventArgs e)
         {
