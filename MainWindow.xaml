@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="But why" Height="600" Width="725"
+        Title="But why" Height="650" Width="725"
         Closing="Window_Closing">
 
     <Window.Resources>
@@ -85,7 +85,8 @@
             <Button x:Name="insertRowButton" Margin="10" Content="InsertRowHere" Click="insertRowButton_Click" Padding="5" />
             <Button x:Name="startFromSelectedButton" Margin="10" Content="Start From Here" Click="startFromSelectedButton_Click"  Padding="5"/>
             <Button x:Name="startButton" Margin="10" Content="Start Macro" Click="Button_Click" Padding="10"/>
-            <Button x:Name="screenShotButton" Margin="10" Content="TakeScreenShot" Click="screenShotButton_Click"  Padding="10"/>
+            <Button x:Name="screenShotButton" Margin="10" Content="TakeScreenShot" Click="screenShotButton_Click"  Padding="5"/>
+            <Button x:Name="setWindowSize" Margin="10" Content="Set Window Size" Click="setWindowSize_Click"  Padding="5"/>
         </StackPanel>
         
         <DataGrid x:Name="commandDataGrid" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding}" AutoGenerateColumns="False" LoadingRow="commandDataGrid_LoadingRow" CellEditEnding="commandDataGrid_CellEditEnding" UnloadingRow="commandDataGrid_UnloadingRow" >

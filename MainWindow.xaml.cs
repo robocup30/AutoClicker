@@ -92,6 +92,9 @@ namespace AutoClicker
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern IntPtr GetModuleHandle(string lpModuleName);
 
+        [DllImport("user32.dll", SetLastError = true)]
+        static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int Width, int Height, bool Repaint);
+
 
         public struct Rect
         {
@@ -519,7 +522,9 @@ namespace AutoClicker
                     absoluteLabel.Content = p.X + ", " + p.Y + "      color: " + c.R + " " + c.G + " " + c.B;
                     absoluteRect.Fill = new SolidColorBrush(c);
 
-                    windowCoordinateLabel.Content = "Handle is " + currentlySelectedWindow + " X: " + windowRect.Left + "  Y: " + windowRect.Top;
+                    int width = windowRect.Right - windowRect.Left;
+                    int height = windowRect.Bottom - windowRect.Top;
+                    windowCoordinateLabel.Content = "Handle is " + currentlySelectedWindow + " X: " + windowRect.Left + "  Y: " + windowRect.Top + "  " + width + "  " + height;
 
                     /*
                     Color windowColor = GetPixelColorFromWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
@@ -846,6 +851,13 @@ namespace AutoClicker
         public string colorToString(Color c)
         {
             return "" + c.R + " " + c.G + " " + c.B;
+        }
+
+        private void setWindowSize_Click(object sender, RoutedEventArgs e)
+        {
+            Rect rect = new Rect();
+            GetWindowRect(currentlySelectedWindow, ref rect);
+            MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 627, 420, true);
         }
     }
 }
