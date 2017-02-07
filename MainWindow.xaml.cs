@@ -199,7 +199,7 @@ namespace AutoClicker
             InitializeComponent();
 
             commands.Add(new Command(CommandType.Wait, "1000", "f", "a", "c"));
-            commands.Add(new Command(CommandType.Click, "50, 50", "1000", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.Flash, "50, 50", "1000", "fds", "das", "fds"));
             commands.Add(new Command(CommandType.Click, "334, 223", "1000", "fds", "das", "fds"));
 
             commandDataGrid.DataContext = commands;
@@ -882,13 +882,13 @@ namespace AutoClicker
 
         private void FlashWindow()
         {
-            Console.WriteLine("FLASHING WINDOW " + currentlySelectedWindow);
+            Console.WriteLine("FLASHING WINDOW " + Process.GetCurrentProcess().MainWindowHandle);
             FLASHWINFO fInfo = new FLASHWINFO();
 
             fInfo.cbSize = Convert.ToUInt32(Marshal.SizeOf(fInfo));
-            fInfo.hwnd = currentlySelectedWindow;
+            fInfo.hwnd = Process.GetCurrentProcess().MainWindowHandle;
             fInfo.dwFlags = FLASHW_ALL;
-            fInfo.uCount = 0;
+            fInfo.uCount = 1;
             fInfo.dwTimeout = 0;
 
             FlashWindowEx(ref fInfo);
