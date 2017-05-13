@@ -843,7 +843,8 @@ namespace AutoClicker
 
         public void TakeScreenShot()
         {
-            TakeScreenShot("c:\\Users\\Joseph\\Desktop\\testSS.png");
+            string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-tt");
+            TakeScreenShot("c:\\Users\\Joseph\\Desktop\\bots\\screenshots\\" + dateString + ".png");
         }
 
         public void TakeScreenShot(string fileName)
