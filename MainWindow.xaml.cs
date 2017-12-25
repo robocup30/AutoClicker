@@ -248,7 +248,7 @@ namespace AutoClicker
 
             //SetForegroundWindow(window);
             SendMessage(window, (int)WMessages.WM_LBUTTONDOWN, 0, MAKELPARAM(x, y));
-            Thread.Sleep(50);
+            Thread.Sleep(25);
             SendMessage(window, (int)WMessages.WM_LBUTTONUP, 0, MAKELPARAM(x, y));
         }
 
@@ -482,7 +482,7 @@ namespace AutoClicker
                     currentCommandIndex++;
                 }
 
-                Thread.Sleep(100);
+                Thread.Sleep(50);
             }
 
             macroShouldEnd = false;
@@ -878,7 +878,8 @@ namespace AutoClicker
         {
             Rect rect = new Rect();
             GetWindowRect(currentlySelectedWindow, ref rect);
-            MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 651, 437, true);
+            // MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 651, 437, true);
+            MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 371, 800, true);
         }
 
         private void FlashWindow()

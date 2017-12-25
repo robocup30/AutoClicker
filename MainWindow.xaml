@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="But why" Height="650" Width="725"
+        Title="Mouse free autoclicker" Height="650" Width="725"
         Closing="Window_Closing">
 
     <Window.Resources>
