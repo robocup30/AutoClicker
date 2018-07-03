@@ -188,6 +188,7 @@ namespace AutoClicker
         Thread macroThread;
         bool programClosing = false;
         bool macroShouldEnd = false;
+        public static Random random = new Random();
 
         public ObservableCollection<Command> commands = new ObservableCollection<Command>();
         public Dictionary<string, int> macroVariables = new Dictionary<string, int>();
@@ -308,6 +309,8 @@ namespace AutoClicker
                 else if(currentCommand.commandType == CommandType.Click)
                 {
                     IntPoint point = GetPointFromString(currentCommand.data0);
+                    point.x += random.Next(-1, 2);
+                    point.y += random.Next(-1, 2);
                     DoMouseClickAtWindow(currentlySelectedWindow, point.x, point.y);
                     Thread.Sleep(int.Parse(currentCommand.data1));
                 }
@@ -550,8 +553,11 @@ namespace AutoClicker
                     Color windowColor = GetPixelColorFromWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
                     relativeLabel.Content = xCoordinateBox.Text + ", " + yCoordinateBox.Text + "      color: " + windowColor.R + " " + windowColor.G + " " + windowColor.B;
                     */
-
-                    Color windowColor = GetPixelColorFromWindow(IntPtr.Zero, int.Parse(xCoordinateBox.Text) + windowRect.Left, int.Parse(yCoordinateBox.Text) + windowRect.Top);
+                    int xCoordinate = 0;
+                    int.TryParse(xCoordinateBox.Text, out xCoordinate);
+                    int yCoordinate = 0;
+                    int.TryParse(yCoordinateBox.Text, out yCoordinate);
+                    Color windowColor = GetPixelColorFromWindow(IntPtr.Zero, xCoordinate + windowRect.Left, yCoordinate + windowRect.Top);
                     relativeLabel.Content = xCoordinateBox.Text + ", " + yCoordinateBox.Text + "      color: " + windowColor.R + " " + windowColor.G + " " + windowColor.B;
                     relativeRect.Fill = new SolidColorBrush(windowColor);
 
@@ -844,7 +850,8 @@ namespace AutoClicker
         public void TakeScreenShot()
         {
             string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-tt");
-            TakeScreenShot("c:\\Users\\Joseph\\Desktop\\bots\\screenshots\\" + dateString + ".png");
+            // TakeScreenShot("c:\\Users\\Joseph\\Desktop\\bots\\screenshots\\" + dateString + ".png");
+            TakeScreenShot(".\\screenshots\\" + dateString + ".png");
         }
 
         public void TakeScreenShot(string fileName)
@@ -878,8 +885,8 @@ namespace AutoClicker
         {
             Rect rect = new Rect();
             GetWindowRect(currentlySelectedWindow, ref rect);
-            // MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 651, 437, true);
-            MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 371, 800, true);
+            MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 651, 437, true);
+            // MoveWindow(currentlySelectedWindow, rect.Left, rect.Top, 371, 800, true);
         }
 
         private void FlashWindow()
