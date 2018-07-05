@@ -195,6 +195,8 @@ namespace AutoClicker
 
         public CSVHandler csvHandler = new CSVHandler();
 
+        bool variableBoxNeedUpdate = true;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -202,13 +204,31 @@ namespace AutoClicker
             commands.Add(new Command(CommandType.Wait, "1000", "f", "a", "c"));
             commands.Add(new Command(CommandType.Flash, "50, 50", "1000", "fds", "das", "fds"));
             commands.Add(new Command(CommandType.Click, "334, 223", "1000", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.SetVariable, "TestVariable1", "5", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.SetVariable, "TestVariable2", "10", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.ChangeVariableBy, "TestVariable1", "-1", "fds", "das", "fds"));
 
             commandDataGrid.DataContext = commands;
+
 
             cursorThread = new Thread(new ThreadStart(LabelUpdate));
             cursorThread.Start();
 
         }
+
+        
+        public void UpdateVariableWindow()
+        {
+            variableListWindow.Items.Clear();
+
+            foreach (KeyValuePair<string, int> kv in macroVariables)
+            {
+                variableListWindow.Items.Add(kv.Key + ": " + kv.Value);
+            }
+
+            variableBoxNeedUpdate = false;
+        }
+        
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -309,8 +329,8 @@ namespace AutoClicker
                 else if(currentCommand.commandType == CommandType.Click)
                 {
                     IntPoint point = GetPointFromString(currentCommand.data0);
-                    point.x += random.Next(-1, 2);
-                    point.y += random.Next(-1, 2);
+                    point.x += random.Next(-2, 3);
+                    point.y += random.Next(-2, 3);
                     DoMouseClickAtWindow(currentlySelectedWindow, point.x, point.y);
                     Thread.Sleep(int.Parse(currentCommand.data1));
                 }
@@ -372,6 +392,8 @@ namespace AutoClicker
                     {
                         macroVariables.Add(currentCommand.data0, int.Parse(currentCommand.data1));
                     }
+
+                    variableBoxNeedUpdate = true;
                 }
                 else if (currentCommand.commandType == CommandType.ChangeVariableBy)
                 {
@@ -383,6 +405,8 @@ namespace AutoClicker
                     {
                         macroVariables.Add(currentCommand.data0, int.Parse(currentCommand.data1));
                     }
+
+                    variableBoxNeedUpdate = true;
                 }
                 else if (currentCommand.commandType == CommandType.IfVariableGoToLabel)
                 {
@@ -479,6 +503,15 @@ namespace AutoClicker
                 {
                     FlashWindow();
                 }
+                else if(currentCommand.commandType == CommandType.Beep)
+                {
+                    System.Media.SystemSounds.Asterisk.Play();
+                    Thread.Sleep(800);
+                    System.Media.SystemSounds.Asterisk.Play();
+                    Thread.Sleep(800);
+                    System.Media.SystemSounds.Asterisk.Play();
+                    Thread.Sleep(800);
+                }
 
                 if (shouldMoveToNext)
                 {
@@ -570,6 +603,11 @@ namespace AutoClicker
                     Color pixelColor = GetPixelColor(200 + windowRect.Left, 200 + windowRect.Top);
                     Console.WriteLine(pixelColor.R + " " + pixelColor.G + " " + pixelColor.B);
                     */
+
+                    if(variableBoxNeedUpdate)
+                    {
+                        UpdateVariableWindow();
+                    }
                 }));
 
                 Thread.Sleep(500);
@@ -901,6 +939,11 @@ namespace AutoClicker
             fInfo.dwTimeout = 0;
 
             FlashWindowEx(ref fInfo);
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

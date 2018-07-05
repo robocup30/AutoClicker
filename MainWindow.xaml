@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AutoClicker"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Mouse free autoclicker" Height="650" Width="725"
+        Title="Mouse free autoclicker" Height="760" Width="725"
         Closing="Window_Closing">
 
     <Window.Resources>
@@ -21,7 +21,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -41,8 +41,7 @@
             <StackPanel></StackPanel>
         </DockPanel>
 
-
-        <StackPanel Grid.Row="1" Grid.RowSpan="2" Grid.Column="0" Width="300" HorizontalAlignment="Left">
+        <StackPanel Grid.Row="1" Grid.Column="0" Width="300" HorizontalAlignment="Left">
             <TextBlock x:Name="xCoordinateBoxLabel" Margin="10, 10, 10, -5" TextWrapping="Wrap" Text="X Coordinate" />
             <TextBox x:Name="xCoordinateBox" Margin="10" TextWrapping="Wrap" Text="0" PreviewTextInput="textBoxValue_PreviewTextInput" DataObject.Pasting="textBoxValue_Pasting"/>
             <TextBlock x:Name="yCoordinateBoxLabel" Margin="10, 0, 10, -5" TextWrapping="Wrap" Text="Y Coordinate" />
@@ -87,8 +86,12 @@
             <Button x:Name="startButton" Margin="10" Content="Start Macro" Click="Button_Click" Padding="10"/>
             <Button x:Name="screenShotButton" Margin="10" Content="TakeScreenShot" Click="screenShotButton_Click"  Padding="5"/>
             <Button x:Name="setWindowSize" Margin="10" Content="Set Window Size" Click="setWindowSize_Click"  Padding="5"/>
+
+
         </StackPanel>
-        
+
+        <ListBox x:Name="variableListWindow" Margin="10" Grid.Row="3"/>
+
         <DataGrid x:Name="commandDataGrid" Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ItemsSource="{Binding}" AutoGenerateColumns="False" LoadingRow="commandDataGrid_LoadingRow" CellEditEnding="commandDataGrid_CellEditEnding" UnloadingRow="commandDataGrid_UnloadingRow" >
             <DataGrid.Columns>
                 <DataGridComboBoxColumn  Header="CommandType" SelectedItemBinding="{Binding commandType}" ItemsSource="{Binding Source={StaticResource CommandType}}" Width="4*" />

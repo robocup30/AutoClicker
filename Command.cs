@@ -20,6 +20,7 @@ namespace AutoClicker
         Drag,               // Click and drag cursor                                data0 = start coordinate, data1 = end coordinate, data2 = duration
         ScreenShot,         // Take screenshot                                      data0 = file location (will be time stamped for name)   eg C:\Users\Joseph\Desktop\
         Flash,
+        Beep,
     }
 
     public enum OpType
