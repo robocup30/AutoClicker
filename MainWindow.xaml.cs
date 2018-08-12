@@ -546,6 +546,60 @@ namespace AutoClicker
                     System.Media.SystemSounds.Asterisk.Play();
                     Thread.Sleep(800);
                 }
+                else if(currentCommand.commandType == CommandType.ScreenShotArea)
+                {
+                    IntPoint coordinate = GetPointFromString(currentCommand.data1);
+                    IntPoint size = GetPointFromString(currentCommand.data2);
+                    string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-ss-tt");
+                    TakeScreenShot(currentCommand.data0 + dateString + ".png", coordinate.x, coordinate.y, size.x, size.y);
+                }
+                else if(currentCommand.commandType == CommandType.IfScreenGoToLabel)
+                {
+                    System.Drawing.Bitmap bmpFile = new System.Drawing.Bitmap(currentCommand.data0);
+                    IntPoint coordinate = GetPointFromString(currentCommand.data1);
+
+                    Rect rect = new Rect();
+                    GetWindowRect(currentlySelectedWindow, ref rect);
+
+                    System.Drawing.Bitmap bmpScreen = new System.Drawing.Bitmap(bmpFile.Width, bmpFile.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                    System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bmpScreen);
+                    graphics.CopyFromScreen(rect.Left + coordinate.x, rect.Top + coordinate.y, 0, 0, new System.Drawing.Size(bmpFile.Width, bmpFile.Height), System.Drawing.CopyPixelOperation.SourceCopy);
+
+                    int pixelCount = bmpFile.Width * bmpFile.Height;
+                    int wrongPixelAllowed = (int) (pixelCount - (pixelCount * float.Parse(currentCommand.data2)));
+                    int wrongPixelCount = 0;
+
+                    for (int y = 0; y < bmpFile.Height; y++)
+                    {
+                        for(int x = 0; x < bmpFile.Width; x++)
+                        {
+                            System.Drawing.Color fileColor = bmpFile.GetPixel(x, y);
+                            System.Drawing.Color screenColor = bmpScreen.GetPixel(x, y);
+
+                            if (!IsColorSimilar(fileColor, screenColor, int.Parse(currentCommand.data3)))
+                            {
+                                wrongPixelCount++;
+                                if(wrongPixelCount > wrongPixelAllowed)
+                                {
+                                    break;
+                                }
+                            }
+
+                        }
+
+                        if (wrongPixelCount > wrongPixelAllowed)
+                        {
+                            break;
+                        }
+                    }
+
+                    if (wrongPixelCount <= wrongPixelAllowed)
+                    {
+                        TryJumpToLabel(currentCommand.data4, ref currentCommandIndex, ref shouldMoveToNext);
+                    }
+
+                    bmpFile.Dispose();
+                }
 
                 if (shouldMoveToNext)
                 {
@@ -766,7 +820,17 @@ namespace AutoClicker
             return Color.FromRgb(byte.Parse(values[0]), byte.Parse(values[1]), byte.Parse(values[2]));
         }
 
+        // We got 2 IsColorSimilar
         public static bool IsColorSimilar(Color c1, Color c2, int tolerance)
+        {
+            int diffR = Math.Abs(c1.R - c2.R);
+            int diffG = Math.Abs(c1.G - c2.G);
+            int diffB = Math.Abs(c1.B - c2.B);
+
+            return diffR <= tolerance && diffG <= tolerance && diffB <= tolerance;
+        }
+
+        public static bool IsColorSimilar(System.Drawing.Color c1, System.Drawing.Color c2, int tolerance)
         {
             int diffR = Math.Abs(c1.R - c2.R);
             int diffG = Math.Abs(c1.G - c2.G);
@@ -912,14 +976,20 @@ namespace AutoClicker
             int width = rect.Right - rect.Left;
             int height = rect.Bottom - rect.Top;
 
+            TakeScreenShot(fileName, 0, 0, width, height);
+        }
+
+        public void TakeScreenShot(string fileName, int x, int y, int width, int height)
+        {
+            Rect rect = new Rect();
+            GetWindowRect(currentlySelectedWindow, ref rect);
+
             System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             System.Drawing.Graphics graphics = System.Drawing.Graphics.FromImage(bmp);
-            graphics.CopyFromScreen(rect.Left, rect.Top, 0, 0, new System.Drawing.Size(width, height), System.Drawing.CopyPixelOperation.SourceCopy);
+            graphics.CopyFromScreen(rect.Left + x, rect.Top + y, 0, 0, new System.Drawing.Size(width, height), System.Drawing.CopyPixelOperation.SourceCopy);
 
             bmp.Save(fileName, System.Drawing.Imaging.ImageFormat.Png);
         }
-
-
 
         private void screenShotButton_Click(object sender, RoutedEventArgs e)
         {

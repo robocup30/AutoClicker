@@ -20,6 +20,8 @@ namespace AutoClicker
         Drag,               // Click and drag cursor                                data0 = start coordinate, data1 = end coordinate, data2 = duration
         ScreenShot,         // Take screenshot                                      data0 = file location (will be time stamped for name)   eg C:\Users\Joseph\Desktop\
         Flash,
+        ScreenShotArea,     // Take screenshot of area specified                    data0 = file location, data1 = x and y, data2 = width and height
+        IfScreenGoToLabel,   // If screen matches screenshot, go to label           data0 = screen shot location, data1 = x and y, data2 = pixel % that must pass, data3 = pixel color threshold to be wrong, data4 = label
         Beep,
     }
 
