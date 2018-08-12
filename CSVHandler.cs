@@ -64,6 +64,8 @@ namespace AutoClicker
                     file.WriteLine(line);
                 }
             }
+
+            currentFileName = fileName;
         }
 
     }

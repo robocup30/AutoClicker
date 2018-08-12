@@ -24,6 +24,16 @@ namespace AutoClicker
     // https://social.msdn.microsoft.com/Forums/en-US/bfc75b57-df16-48c6-92af-ea0a34f540ae/how-to-get-the-handle-of-a-window-that-i-click?forum=csharplanguage
 
 
+    public class ThreadObject
+    {
+        public bool shouldEnd = false;
+
+        public ThreadObject()
+        {
+            shouldEnd = false;
+        }
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -187,8 +197,8 @@ namespace AutoClicker
         Thread cursorThread;
         Thread macroThread;
         bool programClosing = false;
-        bool macroShouldEnd = false;
         public static Random random = new Random();
+        ThreadObject mostRecentThreadObject;
 
         public ObservableCollection<Command> commands = new ObservableCollection<Command>();
         public Dictionary<string, int> macroVariables = new Dictionary<string, int>();
@@ -203,9 +213,9 @@ namespace AutoClicker
 
             commands.Add(new Command(CommandType.Wait, "1000", "f", "a", "c"));
             commands.Add(new Command(CommandType.Flash, "50, 50", "1000", "fds", "das", "fds"));
-            commands.Add(new Command(CommandType.Click, "334, 223", "1000", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.Wait, "10000", "1000", "fds", "das", "fds"));
             commands.Add(new Command(CommandType.SetVariable, "TestVariable1", "5", "fds", "das", "fds"));
-            commands.Add(new Command(CommandType.SetVariable, "TestVariable2", "10", "fds", "das", "fds"));
+            commands.Add(new Command(CommandType.Wait, "10000", "10", "fds", "das", "fds"));
             commands.Add(new Command(CommandType.ChangeVariableBy, "TestVariable1", "-1", "fds", "das", "fds"));
 
             commandDataGrid.DataContext = commands;
@@ -213,10 +223,8 @@ namespace AutoClicker
 
             cursorThread = new Thread(new ThreadStart(LabelUpdate));
             cursorThread.Start();
-
         }
 
-        
         public void UpdateVariableWindow()
         {
             variableListWindow.Items.Clear();
@@ -230,24 +238,50 @@ namespace AutoClicker
         }
         
 
+        private void StartMacroButtonClicked(int startingIndex)
+        {
+            mostRecentThreadObject = new ThreadObject();
+            startButton.Content = "Stop Macro";
+            startFromSelectedButton.Content = "Stop Macro";
+            macroThread = new Thread(() => MacroUpdate(startingIndex, mostRecentThreadObject));
+            macroThread.Start();
+        }
+
+        private void StopMacroButtonClicked()
+        {
+            mostRecentThreadObject.shouldEnd = true;
+            mostRecentThreadObject = null;
+            startButton.Content = "Start Macro";
+            startFromSelectedButton.Content = "Start From Here";
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if(macroThread == null || !macroThread.IsAlive)
+            if(mostRecentThreadObject == null || mostRecentThreadObject.shouldEnd)
             {
-                startButton.Content = "Stop Macro";
-                startFromSelectedButton.Content = "Stop Macro";
-                macroThread = new Thread(() => MacroUpdate(0));
-                macroThread.Start();
+                StartMacroButtonClicked(0);
             }
             else
             {
-                startButton.Content = "Start Macro";
-                startFromSelectedButton.Content = "Start From Here";
-                macroShouldEnd = true;
+                StopMacroButtonClicked();
             }
+        }
 
-            //DoMouseClickAtWindow(currentlySelectedWindow, 250, 450);
-            //DoMouseClickAtWindow(currentlySelectedWindow, int.Parse(xCoordinateBox.Text), int.Parse(yCoordinateBox.Text));
+        private void startFromSelectedButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (mostRecentThreadObject == null)
+            {
+                int tempInt = commandDataGrid.SelectedIndex;
+                if (tempInt < 0)
+                {
+                    tempInt = 0;
+                }
+                StartMacroButtonClicked(tempInt);
+            }
+            else
+            {
+                StopMacroButtonClicked();
+            }
         }
 
         public void DoMouseClick(uint x, uint y)
@@ -303,10 +337,10 @@ namespace AutoClicker
             programClosing = true;
         }
 
-        private void MacroUpdate(int startingIndex = 0)
+        private void MacroUpdate(int startingIndex, ThreadObject threadObject)
         {
             int currentCommandIndex = startingIndex;
-            while (!programClosing && !macroShouldEnd)
+            while (!programClosing && !threadObject.shouldEnd)
             {
                 bool shouldMoveToNext = true;
 
@@ -496,7 +530,7 @@ namespace AutoClicker
                 }
                 else if(currentCommand.commandType == CommandType.ScreenShot)
                 {
-                    string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-tt");
+                    string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-ss-tt");
                     TakeScreenShot(currentCommand.data0 + dateString + ".png");
                 }
                 else if (currentCommand.commandType == CommandType.Flash)
@@ -521,7 +555,7 @@ namespace AutoClicker
                 Thread.Sleep(50);
             }
 
-            macroShouldEnd = false;
+            threadObject.shouldEnd = true;
 
             Dispatcher.BeginInvoke(new Action(() =>
             {
@@ -858,28 +892,6 @@ namespace AutoClicker
             }
         }
 
-        private void startFromSelectedButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (macroThread == null || !macroThread.IsAlive)
-            {
-                startButton.Content = "Stop Macro";
-                startFromSelectedButton.Content = "Stop Macro";
-                int tempInt = commandDataGrid.SelectedIndex;
-                if(tempInt < 0)
-                {
-                    tempInt = 0;
-                }
-                macroThread = new Thread(() => MacroUpdate(tempInt));
-                macroThread.Start();
-            }
-            else
-            {
-                startButton.Content = "Start Macro";
-                startFromSelectedButton.Content = "Start From Here";
-                macroShouldEnd = true;
-            }
-        }
-
         public static float Lerp(float value1, float value2, float amount)
         {
             return value1 + (value2 - value1) * amount;
@@ -887,7 +899,7 @@ namespace AutoClicker
 
         public void TakeScreenShot()
         {
-            string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-tt");
+            string dateString = DateTime.Now.ToString("MM-dd-yyyy h-mm-ss-tt");
             // TakeScreenShot("c:\\Users\\Joseph\\Desktop\\bots\\screenshots\\" + dateString + ".png");
             TakeScreenShot(".\\screenshots\\" + dateString + ".png");
         }
